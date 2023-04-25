@@ -33,14 +33,18 @@ namespace UnityEditor.Timeline
 
             if (sourceObject)
             {
-                var directors = asset.GetComponent<PlayableDirector>(sourceObject);
-                var particleSystems = asset.GetComponent<ParticleSystem>(sourceObject);
+                using (ListPools.PlayableDirector.Rent(out var directors))
+                using (ListPools.ParticleSystem.Rent(out var particleSystems))
+                {
+                    asset.GetComponent(sourceObject, directors);
+                    asset.GetComponent(sourceObject, particleSystems);
 
-                // update the duration and loop values (used for UI purposes) here
-                // so they are tied to the latest gameObject bound
-                asset.UpdateDurationAndLoopFlag(directors, particleSystems);
+                    // update the duration and loop values (used for UI purposes) here
+                    // so they are tied to the latest gameObject bound
+                    asset.UpdateDurationAndLoopFlag(directors, particleSystems);
 
-                clip.displayName = sourceObject.name;
+                    clip.displayName = sourceObject.name;
+                }
             }
         }
 
@@ -56,13 +60,17 @@ namespace UnityEditor.Timeline
             if (go == null)
                 return;
 
-            foreach (var subTimeline in asset.GetComponent<PlayableDirector>(go))
+            using (ListPools.PlayableDirector.Rent(out var timelineBuf))
             {
-                if (subTimeline == director || subTimeline == TimelineEditor.masterDirector)
-                    continue;
+                asset.GetComponent(go, timelineBuf);
+                foreach (var subTimeline in timelineBuf)
+                {
+                    if (subTimeline == director || subTimeline == TimelineEditor.masterDirector)
+                        continue;
 
-                if (subTimeline.playableAsset is TimelineAsset)
-                    subTimelines.Add(subTimeline);
+                    if (subTimeline.playableAsset is TimelineAsset)
+                        subTimelines.Add(subTimeline);
+                }
             }
         }
     }

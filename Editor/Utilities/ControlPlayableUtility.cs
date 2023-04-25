@@ -24,8 +24,10 @@ namespace UnityEditor.Timeline
 
             set.Add(director);
 
-            foreach (var subDirector in asset.GetComponent<PlayableDirector>(gameObject))
+            using (ListPools.PlayableDirector.Rent(out var subDirectors))
             {
+                asset.GetComponent(gameObject, subDirectors);
+                foreach (var subDirector in subDirectors)
                 foreach (var childAsset in GetPlayableAssets(subDirector))
                 {
                     if (DetectCycle(childAsset, subDirector, set))

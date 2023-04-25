@@ -126,7 +126,7 @@ namespace UnityEngine.Timeline
             }
 
             Playable root = Playable.Null;
-            var playables = new List<Playable>();
+            using var _ = ListPools.Playable.Rent(out var playables);
 
             GameObject sourceObject = sourceGameObject.Resolve(graph.GetResolver());
             if (prefabGameObject != null)
@@ -146,8 +146,18 @@ namespace UnityEngine.Timeline
 
             if (sourceObject != null)
             {
-                var directors = updateDirector ? GetComponent<PlayableDirector>(sourceObject) : k_EmptyDirectorsList;
-                var particleSystems = updateParticle ? GetControllableParticleSystems(sourceObject) : k_EmptyParticlesList;
+                var directors = k_EmptyDirectorsList;
+                if (updateDirector)
+                {
+                    ListPools.PlayableDirector.Rent(out directors);
+                    GetComponent(sourceObject, directors);
+                }
+                var particleSystems = k_EmptyParticlesList;
+                if (updateParticle)
+                {
+                    ListPools.ParticleSystem.Rent(out particleSystems);
+                    GetComponent(sourceObject, particleSystems);
+                }
 
                 // update the duration and loop values (used for UI purposes) here
                 // so they are tied to the latest gameObject bound
@@ -175,10 +185,22 @@ namespace UnityEngine.Timeline
                     SearchHierarchyAndConnectParticleSystem(particleSystems, graph, playables);
 
                 if (updateITimeControl)
-                    SearchHierarchyAndConnectControlableScripts(GetControlableScripts(sourceObject), graph, playables);
+                {
+                    using (ListPools.MonoBehaviours.Rent(out var controlableScripts))
+                    {
+                        GetControlableScripts(sourceObject, controlableScripts);
+                        SearchHierarchyAndConnectControlableScripts(controlableScripts, graph, playables);
+                    }
+                }
 
                 // Connect Playables to Generic to Mixer
                 root = ConnectPlayablesToMixer(graph, playables);
+
+                // Release the lists.
+                if (updateDirector)
+                    ListPools.PlayableDirector.Release(directors);
+                if (updateParticle)
+                    ListPools.ParticleSystem.Release(particleSystems);
             }
 
             if (prefabGameObject != null)
@@ -264,9 +286,8 @@ namespace UnityEngine.Timeline
             mixer.SetInputWeight(playable, 1.0f);
         }
 
-        internal IList<T> GetComponent<T>(GameObject gameObject)
+        internal void GetComponent<T>(GameObject gameObject, List<T> components)
         {
-            var components = new List<T>();
             if (gameObject != null)
             {
                 if (searchHierarchy)
@@ -278,22 +299,21 @@ namespace UnityEngine.Timeline
                     gameObject.GetComponents<T>(components);
                 }
             }
-            return components;
         }
 
-        internal static IEnumerable<MonoBehaviour> GetControlableScripts(GameObject root)
+        internal static void GetControlableScripts(GameObject root, List<MonoBehaviour> scripts)
         {
             if (root == null)
-                yield break;
+                return;
 
             foreach (var script in root.GetComponentsInChildren<MonoBehaviour>())
             {
                 if (script is ITimeControl)
-                    yield return script;
+                    scripts.Add(script);
             }
         }
 
-        internal void UpdateDurationAndLoopFlag(IList<PlayableDirector> directors, IList<ParticleSystem> particleSystems)
+        internal void UpdateDurationAndLoopFlag(List<PlayableDirector> directors, List<ParticleSystem> particleSystems)
         {
             if (directors.Count == 0 && particleSystems.Count == 0)
                 return;
@@ -328,10 +348,8 @@ namespace UnityEngine.Timeline
             m_SupportLoop = supportsLoop;
         }
 
-        IList<ParticleSystem> GetControllableParticleSystems(GameObject go)
+        void GetControllableParticleSystems(GameObject go, List<ParticleSystem> roots)
         {
-            var roots = new List<ParticleSystem>();
-
             // searchHierarchy will look for particle systems on child objects.
             // once a particle system is found, all child particle systems are controlled with playables
             // unless they are subemitters
@@ -341,8 +359,6 @@ namespace UnityEngine.Timeline
                 GetControllableParticleSystems(go.transform, roots, s_SubEmitterCollector);
                 s_SubEmitterCollector.Clear();
             }
-
-            return roots;
         }
 
         static void GetControllableParticleSystems(Transform t, ICollection<ParticleSystem> roots, HashSet<ParticleSystem> subEmitters)
@@ -397,10 +413,22 @@ namespace UnityEngine.Timeline
                     PreviewActivation(driver, new[] { gameObject });
 
                 if (updateITimeControl)
-                    PreviewTimeControl(driver, director, GetControlableScripts(gameObject));
+                {
+                    using (ListPools.MonoBehaviours.Rent(out var controlableScripts))
+                    {
+                        GetControlableScripts(gameObject, controlableScripts);
+                        PreviewTimeControl(driver, director, controlableScripts);
+                    }
+                }
 
                 if (updateDirector)
-                    PreviewDirectors(driver, GetComponent<PlayableDirector>(gameObject));
+                {
+                    using (ListPools.PlayableDirector.Rent(out var directors))
+                    {
+                        GetComponent(gameObject, directors);
+                        PreviewDirectors(driver, directors);
+                    }
+                }
             }
             s_ProcessedDirectors.Remove(director);
         }

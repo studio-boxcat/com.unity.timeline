@@ -47,9 +47,21 @@ namespace UnityEngine.Timeline
                 if (controlPlayableAsset.active)
                     activationToPreview.Add(gameObject);
                 if (controlPlayableAsset.updateITimeControl)
-                    timeControlToPreview.UnionWith(ControlPlayableAsset.GetControlableScripts(gameObject));
+                {
+                    using (ListPools.MonoBehaviours.Rent(out var controlableScripts))
+                    {
+                        ControlPlayableAsset.GetControlableScripts(gameObject, controlableScripts);
+                        timeControlToPreview.UnionWith(controlableScripts);
+                    }
+                }
                 if (controlPlayableAsset.updateDirector)
-                    subDirectorsToPreview.UnionWith(controlPlayableAsset.GetComponent<PlayableDirector>(gameObject));
+                {
+                    using (ListPools.PlayableDirector.Rent(out var directors))
+                    {
+                        controlPlayableAsset.GetComponent(gameObject, directors);
+                        subDirectorsToPreview.UnionWith(directors);
+                    }
+                }
             }
 
             ControlPlayableAsset.PreviewParticles(driver, particlesToPreview);
