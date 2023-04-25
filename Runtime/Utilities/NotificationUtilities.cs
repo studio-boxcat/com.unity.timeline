@@ -42,12 +42,20 @@ namespace UnityEngine.Timeline
             return notificationPlayable;
         }
 
+        static readonly Dictionary<Type, bool> _supportsNotificationsCache = new Dictionary<Type, bool>();
+
         public static bool TrackTypeSupportsNotifications(Type type)
         {
+            if (_supportsNotificationsCache.TryGetValue(type, out var result))
+                return result;
+
             var binding = (TrackBindingTypeAttribute)Attribute.GetCustomAttribute(type, typeof(TrackBindingTypeAttribute));
-            return binding != null &&
+            result = binding != null &&
                 (typeof(Component).IsAssignableFrom(binding.type) ||
                     typeof(GameObject).IsAssignableFrom(binding.type));
+
+            _supportsNotificationsCache.Add(type, result);
+            return result;
         }
     }
 }
