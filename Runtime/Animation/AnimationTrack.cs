@@ -145,9 +145,6 @@ namespace UnityEngine.Timeline
         [SerializeField, FormerlySerializedAs("m_OpenClipRemoveOffset")]
         bool m_InfiniteClipRemoveOffset; // cached value for remove offset
 
-        [SerializeField]
-        bool m_InfiniteClipApplyFootIK = true;
-
         [SerializeField, HideInInspector]
         AnimationPlayableAsset.LoopMode mInfiniteClipLoop = AnimationPlayableAsset.LoopMode.UseSourceAsset;
 
@@ -158,9 +155,6 @@ namespace UnityEngine.Timeline
         [SerializeField]
         Vector3 m_EulerAngles = Vector3.zero;
 
-
-        [SerializeField] AvatarMask m_AvatarMask;
-        [SerializeField] bool m_ApplyAvatarMask = true;
 
         [SerializeField] TrackOffset m_TrackOffset = TrackOffset.ApplyTransformOffsets;
 
@@ -261,27 +255,6 @@ namespace UnityEngine.Timeline
             set { m_InfiniteClipRemoveOffset = value; }
         }
 
-        /// <summary>
-        /// Specifies the AvatarMask to be applied to all clips on the track.
-        /// </summary>
-        /// <remarks>
-        /// Applying an AvatarMask to an animation track will allow discarding portions of the animation being applied on the track.
-        /// </remarks>
-        public AvatarMask avatarMask
-        {
-            get { return m_AvatarMask; }
-            set { m_AvatarMask = value; }
-        }
-
-        /// <summary>
-        /// Specifies whether to apply the AvatarMask to the track.
-        /// </summary>
-        public bool applyAvatarMask
-        {
-            get { return m_ApplyAvatarMask; }
-            set { m_ApplyAvatarMask = value; }
-        }
-
         // is this track compilable
 
         internal override bool CanCompileClips()
@@ -329,12 +302,6 @@ namespace UnityEngine.Timeline
         {
             get { return m_InfiniteClipOffsetEulerAngles; }
             set { m_InfiniteClipOffsetEulerAngles = value; }
-        }
-
-        internal bool infiniteClipApplyFootIK
-        {
-            get { return m_InfiniteClipApplyFootIK; }
-            set { m_InfiniteClipApplyFootIK = value; }
         }
 
         internal double infiniteClipTimeOffset
@@ -569,7 +536,7 @@ namespace UnityEngine.Timeline
 
             var genericRoot = GetGenericRootNode(go);
             var animatesRootTransformNoMask = AnimatesRootTransform();
-            var animatesRootTransform = animatesRootTransformNoMask && !IsRootTransformDisabledByMask(go, genericRoot);
+            var animatesRootTransform = animatesRootTransformNoMask;
             foreach (var subTrack in GetChildTracks())
             {
                 var child = subTrack as AnimationTrack;
@@ -577,7 +544,7 @@ namespace UnityEngine.Timeline
                 {
                     var childAnimatesRoot = child.AnimatesRootTransform();
                     animatesRootTransformNoMask |= child.AnimatesRootTransform();
-                    animatesRootTransform |= (childAnimatesRoot && !child.IsRootTransformDisabledByMask(go, genericRoot));
+                    animatesRootTransform |= childAnimatesRoot;
                     flattenTracks.Add(child);
                 }
             }
@@ -591,18 +558,12 @@ namespace UnityEngine.Timeline
                 int blendIndex = c + defaultBlendCount;
                 // if the child is masking the root transform, compile it as if we are non-root mode
                 var childMode = mode;
-                if (mode != AppliedOffsetMode.NoRootTransform && flattenTracks[c].IsRootTransformDisabledByMask(go, genericRoot))
-                    childMode = AppliedOffsetMode.NoRootTransform;
 
                 var compiledTrackPlayable = flattenTracks[c].inClipMode ?
                     CompileTrackPlayable(graph, flattenTracks[c], go, tree, childMode) :
                     flattenTracks[c].CreateInfiniteTrackPlayable(graph, go, tree, childMode);
                 graph.Connect(compiledTrackPlayable, 0, layerMixer, blendIndex);
                 layerMixer.SetInputWeight(blendIndex, flattenTracks[c].inClipMode ? 0 : 1);
-                if (flattenTracks[c].applyAvatarMask && flattenTracks[c].avatarMask != null)
-                {
-                    layerMixer.SetLayerMaskFromAvatarMask((uint)blendIndex, flattenTracks[c].avatarMask);
-                }
             }
 
             var requiresMotionXPlayable = RequiresMotionXPlayable(mode, go);
@@ -798,7 +759,7 @@ namespace UnityEngine.Timeline
             // In infinite mode, we always force the loop mode of the clip off because the clip keys are offset in infinite mode
             //  which causes loop to behave different.
             // The inline curve editor never shows loops in infinite mode.
-            var playable = AnimationPlayableAsset.CreatePlayable(graph, m_InfiniteClip, m_InfiniteClipOffsetPosition, m_InfiniteClipOffsetEulerAngles, false, mode, infiniteClipApplyFootIK, AnimationPlayableAsset.LoopMode.Off);
+            var playable = AnimationPlayableAsset.CreatePlayable(graph, m_InfiniteClip, m_InfiniteClipOffsetPosition, m_InfiniteClipOffsetEulerAngles, false, mode, false, AnimationPlayableAsset.LoopMode.Off);
             if (playable.IsValid())
             {
                 tree.Add(new InfiniteRuntimeClip(playable));
@@ -985,35 +946,6 @@ namespace UnityEngine.Timeline
             }
 
             return AppliedOffsetMode.TransformOffsetLegacy;
-        }
-
-        private bool IsRootTransformDisabledByMask(GameObject gameObject, Transform genericRootNode)
-        {
-            if (avatarMask == null || !applyAvatarMask)
-                return false;
-
-            var animator = GetBinding(gameObject != null ? gameObject.GetComponent<PlayableDirector>() : null);
-            if (animator == null)
-                return false;
-
-            if (animator.isHuman)
-                return !avatarMask.GetHumanoidBodyPartActive(AvatarMaskBodyPart.Root);
-
-            if (avatarMask.transformCount == 0)
-                return false;
-
-            // no special root supplied
-            if (genericRootNode == null)
-                return string.IsNullOrEmpty(avatarMask.GetTransformPath(0)) && !avatarMask.GetTransformActive(0);
-
-            // walk the avatar list to find the matching transform
-            for (int i = 0; i < avatarMask.transformCount; i++)
-            {
-                if (genericRootNode == animator.transform.Find(avatarMask.GetTransformPath(i)))
-                    return !avatarMask.GetTransformActive(i);
-            }
-
-            return false;
         }
 
         // Returns the generic root transform node. Returns null if it is the root node, OR if it not a generic node

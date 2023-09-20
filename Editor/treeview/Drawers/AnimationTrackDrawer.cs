@@ -8,32 +8,6 @@ namespace UnityEditor.Timeline
     [CustomTrackDrawer(typeof(AnimationTrack)), UsedImplicitly]
     class AnimationTrackDrawer : TrackDrawer
     {
-        static class Styles
-        {
-            public static readonly GUIContent AvatarMaskActiveTooltip = L10n.TextContent(string.Empty, "Enable Avatar Mask");
-            public static readonly GUIContent AvatarMaskInactiveTooltip = L10n.TextContent(string.Empty, "Disable Avatar Mask");
-        }
-
-        public override void DrawTrackHeaderButton(Rect rect, WindowState state)
-        {
-            var animTrack = track as AnimationTrack;
-            if (animTrack == null) return;
-
-            var style = DirectorStyles.Instance.trackAvatarMaskButton;
-            var tooltip = animTrack.applyAvatarMask ? Styles.AvatarMaskInactiveTooltip : Styles.AvatarMaskActiveTooltip;
-
-            using (var check = new EditorGUI.ChangeCheckScope())
-            {
-                var toggle = GUI.Toggle(rect, animTrack.applyAvatarMask, tooltip, style);
-                if (check.changed)
-                {
-                    animTrack.applyAvatarMask = toggle;
-                    if (state != null)
-                        state.rebuildGraph = true;
-                }
-            }
-        }
-
         public override void DrawRecordingBackground(Rect trackRect, TrackAsset trackAsset, Vector2 visibleTime, WindowState state)
         {
             base.DrawRecordingBackground(trackRect, trackAsset, visibleTime, state);
@@ -80,10 +54,7 @@ namespace UnityEditor.Timeline
 
         public override bool HasCustomTrackHeaderButton()
         {
-            var animTrack = track as AnimationTrack;
-            if (animTrack == null) return false;
-
-            return animTrack != null && animTrack.avatarMask != null;
+            return false;
         }
     }
 }

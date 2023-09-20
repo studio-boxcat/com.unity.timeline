@@ -17,7 +17,6 @@ namespace UnityEditor.Timeline
             public static readonly GUIContent MatchTargetFieldsTitle = L10n.TextContent("Offsets Match Fields", "Fields to apply when matching offsets on clips. The defaults can be set on the track.");
             public static readonly GUIContent UseDefaults = L10n.TextContent("Use defaults");
             public static readonly GUIContent RemoveStartOffset = L10n.TextContent("Remove Start Offset", "Makes playback of the clip play relative to first key of the root transform");
-            public static readonly GUIContent ApplyFootIK = L10n.TextContent("Foot IK", "Enable to apply foot IK to the AnimationClip when the target is humanoid.");
             public static readonly GUIContent Loop = L10n.TextContent("Loop", "Whether the source Animation Clip loops during playback.");
         }
 
@@ -36,7 +35,6 @@ namespace UnityEditor.Timeline
         SerializedObject m_SerializedAnimClip;
         SerializedProperty m_SerializedAnimClipName;
         SerializedProperty m_RemoveStartOffsetProperty;
-        SerializedProperty m_ApplyFootIK;
         SerializedProperty m_Loop;
 
         Vector3 m_LastPosition;
@@ -80,7 +78,6 @@ namespace UnityEditor.Timeline
             }
 
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(m_ApplyFootIK, Styles.ApplyFootIK);
             EditorGUILayout.PropertyField(m_Loop, Styles.Loop);
             if (EditorGUI.EndChangeCheck())
                 TimelineEditor.Refresh(RefreshReason.ContentsModified);
@@ -224,7 +221,6 @@ namespace UnityEditor.Timeline
             m_UseTrackMatchFieldsProperty = serializedObject.FindProperty("m_UseTrackMatchFields");
             m_MatchTargetFieldsProperty = serializedObject.FindProperty("m_MatchTargetFields");
             m_RemoveStartOffsetProperty = serializedObject.FindProperty("m_RemoveStartOffset");
-            m_ApplyFootIK = serializedObject.FindProperty("m_ApplyFootIK");
             m_Loop = serializedObject.FindProperty("m_Loop");
 
             m_LastPosition = m_PositionProperty.vector3Value;

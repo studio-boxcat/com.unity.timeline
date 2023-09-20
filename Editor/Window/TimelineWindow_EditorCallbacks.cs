@@ -251,13 +251,6 @@ namespace UnityEditor.Timeline
                             TimelineEditor.Refresh(RefreshReason.WindowNeedsRedraw);
                     }
                 }
-                else if (mod.previousValue != null && mod.previousValue.target is AvatarMask) // check if an Avatar Mask has been modified
-                {
-                    rebuildGraph = state.editSequence.asset != null &&
-                        state.editSequence.asset.flattenedTracks
-                            .OfType<UnityEngine.Timeline.AnimationTrack>()
-                            .Any(x => mod.previousValue.target == x.avatarMask);
-                }
             }
 
             if (rebuildGraph)

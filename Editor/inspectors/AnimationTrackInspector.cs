@@ -32,10 +32,7 @@ namespace UnityEditor.Timeline
             public static readonly string InheritedFromParent = L10n.Tr("Inherited");
             public static readonly string InheritedToolTip = L10n.Tr("This value is inherited from it's parent track.");
 
-            public static readonly string AvatarMaskWarning = L10n.Tr("Applying an Avatar Mask to the base track may not properly mask Root Motion or Humanoid bones from an Animator Controller or other Timeline track.");
-
             public static readonly GUIContent RecordingOffsets = L10n.TextContent("Recorded Offsets", "Offsets applied to recorded position and rotation keys");
-            public static readonly GUIContent RecordingIkApplied = L10n.TextContent("Apply Foot IK", "Applies Foot IK to recorded Animation.");
 
             public static readonly GUIContent[] OffsetContents;
             public static readonly GUIContent[] OffsetInheritContents;
@@ -67,13 +64,10 @@ namespace UnityEditor.Timeline
         SerializedProperty m_MatchFieldsProperty;
         SerializedProperty m_TrackPositionProperty;
         SerializedProperty m_TrackRotationProperty;
-        SerializedProperty m_AvatarMaskProperty;
-        SerializedProperty m_ApplyAvatarMaskProperty;
         SerializedProperty m_TrackOffsetProperty;
 
         SerializedProperty m_RecordedOffsetPositionProperty;
         SerializedProperty m_RecordedOffsetEulerProperty;
-        SerializedProperty m_RecordedApplyFootIK;
 
         Vector3 m_lastPosition;
         Vector3 m_lastRotation;
@@ -105,7 +99,6 @@ namespace UnityEditor.Timeline
 
                 EditorGUI.BeginChangeCheck();
                 DrawRecordedProperties();
-                DrawAvatarProperties();
                 if (EditorGUI.EndChangeCheck())
                     RebuildGraph();
 
@@ -314,22 +307,6 @@ namespace UnityEditor.Timeline
             Evaluate();
         }
 
-        void DrawAvatarProperties()
-        {
-            EditorGUILayout.PropertyField(m_ApplyAvatarMaskProperty);
-            if (m_ApplyAvatarMaskProperty.hasMultipleDifferentValues || m_ApplyAvatarMaskProperty.boolValue)
-            {
-                EditorGUI.indentLevel++;
-                EditorGUILayout.PropertyField(m_AvatarMaskProperty);
-                EditorGUI.indentLevel--;
-            }
-
-            if (targets.OfType<AnimationTrack>().Any(x => !x.isSubTrack))
-                EditorGUILayout.HelpBox(Styles.AvatarMaskWarning, MessageType.Warning);
-
-            EditorGUILayout.Space();
-        }
-
         public static void ShowMotionOffsetEditModeToolbar(ref TimelineAnimationUtilities.OffsetEditMode motionOffset)
         {
             GUILayout.BeginHorizontal();
@@ -360,11 +337,8 @@ namespace UnityEditor.Timeline
             m_TrackPositionProperty = serializedObject.FindProperty("m_Position");
             m_TrackRotationProperty = serializedObject.FindProperty("m_EulerAngles");
             m_TrackOffsetProperty = serializedObject.FindProperty("m_TrackOffset");
-            m_AvatarMaskProperty = serializedObject.FindProperty("m_AvatarMask");
-            m_ApplyAvatarMaskProperty = serializedObject.FindProperty("m_ApplyAvatarMask");
             m_RecordedOffsetPositionProperty = serializedObject.FindProperty("m_InfiniteClipOffsetPosition");
             m_RecordedOffsetEulerProperty = serializedObject.FindProperty("m_InfiniteClipOffsetEulerAngles");
-            m_RecordedApplyFootIK = serializedObject.FindProperty("m_InfiniteClipApplyFootIK");
 
             m_lastPosition = m_TrackPositionProperty.vector3Value;
             m_lastRotation = m_TrackRotationProperty.vector3Value;
@@ -439,9 +413,6 @@ namespace UnityEditor.Timeline
             EditorGUILayout.PropertyField(m_RecordedOffsetEulerProperty, Styles.RotationTitle);
             EditorGUILayout.EndHorizontal();
             EditorGUI.indentLevel--;
-            EditorGUILayout.Space();
-
-            EditorGUILayout.PropertyField(m_RecordedApplyFootIK, Styles.RecordingIkApplied);
             EditorGUILayout.Space();
         }
 

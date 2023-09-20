@@ -41,7 +41,6 @@ namespace UnityEngine.Timeline
         [SerializeField] private bool m_UseTrackMatchFields = true;
         [SerializeField] private MatchTargetFields m_MatchTargetFields = MatchTargetFieldConstants.All;
         [SerializeField] private bool m_RemoveStartOffset = true; // set by animation track prior to compilation
-        [SerializeField] private bool m_ApplyFootIK = true;
         [SerializeField] private LoopMode m_Loop = LoopMode.UseSourceAsset;
 
 
@@ -136,15 +135,6 @@ namespace UnityEngine.Timeline
 
 
         /// <summary>
-        /// Enable to apply foot IK to the AnimationClip when the target is humanoid.
-        /// </summary>
-        public bool applyFootIK
-        {
-            get { return m_ApplyFootIK; }
-            set { m_ApplyFootIK = value; }
-        }
-
-        /// <summary>
         /// Whether the source AnimationClip loops during playback
         /// </summary>
         public LoopMode loop
@@ -207,7 +197,7 @@ namespace UnityEngine.Timeline
         /// <returns>The root playable of the subgraph</returns>
         public override Playable CreatePlayable(PlayableGraph graph, GameObject go)
         {
-            Playable root = CreatePlayable(graph, m_Clip, position, eulerAngles, removeStartOffset, appliedOffsetMode, applyFootIK, m_Loop);
+            Playable root = CreatePlayable(graph, m_Clip, position, eulerAngles, removeStartOffset, appliedOffsetMode, false, m_Loop);
 
 #if UNITY_EDITOR
             m_AnimationOffsetPlayable = AnimationOffsetPlayable.Null;

@@ -103,7 +103,6 @@ namespace UnityEditor.Timeline
         public GUIStyle activation;
         public GUIStyle playrange;
         public GUIStyle timelineLockButton;
-        public GUIStyle trackAvatarMaskButton;
         public GUIStyle markerWarning;
         public GUIStyle editModeBtn;
         public GUIStyle showMarkersBtn;
@@ -273,7 +272,6 @@ namespace UnityEditor.Timeline
             activation = GetGUIStyle("Icon-Activation");
             playrange = GetGUIStyle("Icon-Playrange");
             timelineLockButton = GetGUIStyle("IN LockButton");
-            trackAvatarMaskButton = GetGUIStyle("trackAvatarMaskButton");
             trackMarkerButton = GetGUIStyle("trackCollapseMarkerButton");
             markerMultiOverlay = GetGUIStyle("MarkerMultiOverlay");
             editModeBtn = GetGUIStyle("editModeBtn");

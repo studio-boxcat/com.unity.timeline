@@ -113,7 +113,6 @@ namespace UnityEditor.Timeline
 
                     // going to / from infinite mode should reset this. infinite mode
                     animationAsset.removeStartOffset = track.infiniteClipRemoveOffset;
-                    animationAsset.applyFootIK = track.infiniteClipApplyFootIK;
                     animationAsset.loop = track.infiniteClipLoop;
 
                     track.infiniteClipOffsetPosition = Vector3.zero;
@@ -147,7 +146,6 @@ namespace UnityEditor.Timeline
                 track.infiniteClipOffsetPosition = animAsset.position;
                 track.infiniteClipOffsetEulerAngles = animAsset.eulerAngles;
                 track.infiniteClipRemoveOffset = animAsset.removeStartOffset;
-                track.infiniteClipApplyFootIK = animAsset.applyFootIK;
                 track.infiniteClipLoop = animAsset.loop;
             }
 
