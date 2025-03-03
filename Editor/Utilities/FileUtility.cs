@@ -17,11 +17,6 @@ namespace UnityEditor.Timeline
             if (string.IsNullOrEmpty(assetPath))
                 return false;
 
-            if (Provider.enabled && VersionControlUtils.IsPathVersioned(assetPath))
-            {
-                return !AssetDatabase.CanOpenForEdit(asset, StatusQueryOptions.UseCachedIfPossible);
-            }
-
             return (uint)(File.GetAttributes(assetPath) & FileAttributes.ReadOnly) > 0U;
         }
 #else
