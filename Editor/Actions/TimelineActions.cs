@@ -9,6 +9,38 @@ using UnityEngine.Timeline;
 
 namespace UnityEditor.Timeline
 {
+    // Decompiled with JetBrains decompiler
+    // Type: UnityEngine.EventCommandNames
+    // Assembly: UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    // MVID: 429F1B38-D7D0-453D-AA7D-EFB573671ADA
+    // Assembly location: /Applications/Unity/Hub/Editor/2022.3.60f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.IMGUIModule.dll
+    internal static class EventCommandNames
+    {
+        public const string Cut = "Cut";
+        public const string Copy = "Copy";
+        public const string Paste = "Paste";
+        public const string SelectAll = "SelectAll";
+        public const string DeselectAll = "DeselectAll";
+        public const string InvertSelection = "InvertSelection";
+        public const string Duplicate = "Duplicate";
+        public const string Rename = "Rename";
+        public const string Delete = "Delete";
+        public const string SoftDelete = "SoftDelete";
+        public const string Find = "Find";
+        public const string SelectChildren = "SelectChildren";
+        public const string SelectPrefabRoot = "SelectPrefabRoot";
+        public const string UndoRedoPerformed = "UndoRedoPerformed";
+        public const string OnLostFocus = "OnLostFocus";
+        public const string NewKeyboardFocus = "NewKeyboardFocus";
+        public const string ModifierKeysChanged = "ModifierKeysChanged";
+        public const string EyeDropperUpdate = "EyeDropperUpdate";
+        public const string EyeDropperClicked = "EyeDropperClicked";
+        public const string EyeDropperCancelled = "EyeDropperCancelled";
+        public const string ColorPickerChanged = "ColorPickerChanged";
+        public const string FrameSelected = "FrameSelected";
+        public const string FrameSelectedWithLock = "FrameSelectedWithLock";
+    }
+
     [MenuEntry("Copy", MenuPriority.TimelineActionSection.copy)]
     [Shortcut("Main Menu/Edit/Copy", EventCommandNames.Copy)]
     class CopyAction : TimelineAction
