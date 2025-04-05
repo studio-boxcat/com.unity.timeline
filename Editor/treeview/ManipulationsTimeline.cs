@@ -265,7 +265,7 @@ namespace UnityEditor.Timeline
             var currentCombination = KeyCombination.FromKeyboardInput(evt);
 
             // User is not actually pressing the correct key combination for FrameAll
-            if (combination.Count == 1 && shortcutCombination.Equals(currentCombination))
+            if (combination.Count() == 1 && shortcutCombination.Equals(currentCombination))
                 Invoker.InvokeWithSelected<FrameAllAction>();
 
             return true;
