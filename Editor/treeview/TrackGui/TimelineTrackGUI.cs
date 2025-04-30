@@ -307,7 +307,6 @@ namespace UnityEditor.Timeline
                 if (track is GroupTrack)
                     return;
 
-                buttonRect.x -= DrawTrackDropDownMenu(buttonRect);
                 var suiteRect = DrawCustomSuite(state, buttonRect);
 
                 var bindingRect = new Rect(rect.x, rect.y, suiteRect.xMax - rect.x, rect.height);
@@ -319,8 +318,6 @@ namespace UnityEditor.Timeline
         {
             var numberOfButtons = 0;
             if (m_TrackDrawData.m_AllowsRecording || showTrackRecordingDisabled)
-                numberOfButtons++;
-            if (false)
                 numberOfButtons++;
             if (drawer.HasCustomTrackHeaderButton())
                 numberOfButtons++;
@@ -419,23 +416,6 @@ namespace UnityEditor.Timeline
             {
                 track.SetNameWithUndo(trackName);
             }
-        }
-
-        float DrawTrackDropDownMenu(Rect rect)
-        {
-            if (GUI.Button(rect, GUIContent.none, m_Styles.trackOptions))
-            {
-                // the drop down will apply to all selected tracks
-                if (!SelectionManager.Contains(track))
-                {
-                    SelectionManager.Clear();
-                    SelectionManager.Add(track);
-                }
-
-                SequencerContextMenu.ShowTrackContextMenu(null);
-            }
-
-            return WindowConstants.trackHeaderButtonSize;
         }
 
         float DrawRecordButton(Rect rect, WindowState state)

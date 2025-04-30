@@ -156,14 +156,6 @@ namespace UnityEditor.Timeline
             labelRect.x += DirectorStyles.kBaseIndent;
 
             EditorGUI.LabelField(labelRect, DirectorStyles.timelineMarkerTrackHeader);
-
-            const float buttonSize = WindowConstants.trackHeaderButtonSize;
-            const float padding = WindowConstants.trackHeaderButtonPadding;
-            var x = data.headerRect.xMax - buttonSize - padding - 2f;
-            var y = data.headerRect.y + (data.headerRect.height - buttonSize) / 2.0f;
-            var buttonRect = new Rect(x, y, buttonSize, buttonSize);
-
-            DrawTrackDropDownMenu(buttonRect);
         }
 
         static void DrawMarkerDrawerContentBackground(DrawData data)
@@ -190,15 +182,6 @@ namespace UnityEditor.Timeline
                 styles.customSkin.colorLockTextBG,
                 styles.displayBackground);
             boxOverlay.Draw();
-        }
-
-        static void DrawTrackDropDownMenu(Rect rect)
-        {
-            if (GUI.Button(rect, GUIContent.none, DirectorStyles.Instance.trackOptions))
-            {
-                SelectionManager.SelectOnly(TimelineEditor.inspectedAsset.markerTrack);
-                SequencerContextMenu.ShowTrackContextMenu(null);
-            }
         }
 
         bool IsSelected()
