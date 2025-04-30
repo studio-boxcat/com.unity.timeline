@@ -650,32 +650,6 @@ namespace UnityEditor.Timeline
         }
     }
 
-    [Shortcut(Shortcuts.Timeline.zoomIn)]
-    [ActiveInMode(TimelineModes.Default | TimelineModes.ReadOnly)]
-    class ZoomIn : TimelineAction
-    {
-        public override ActionValidity Validate(ActionContext context) => ActionValidity.Valid;
-
-        public override bool Execute(ActionContext actionContext)
-        {
-            TimelineZoomManipulator.Instance.DoZoom(1.15f);
-            return true;
-        }
-    }
-
-    [Shortcut(Shortcuts.Timeline.zoomOut)]
-    [ActiveInMode(TimelineModes.Default | TimelineModes.ReadOnly)]
-    class ZoomOut : TimelineAction
-    {
-        public override ActionValidity Validate(ActionContext context) => ActionValidity.Valid;
-
-        public override bool Execute(ActionContext actionContext)
-        {
-            TimelineZoomManipulator.Instance.DoZoom(0.85f);
-            return true;
-        }
-    }
-
     [Shortcut(Shortcuts.Timeline.navigateLeft)]
     [ActiveInMode(TimelineModes.Default | TimelineModes.ReadOnly)]
     class NavigateLeft : TimelineAction

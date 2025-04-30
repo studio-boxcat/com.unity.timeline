@@ -42,8 +42,6 @@ namespace UnityEditor.Timeline
             public const string nextKey = "Timeline/NextKey";
             public const string goToStart = "Timeline/GotoStart";
             public const string goToEnd = "Timeline/GotoEnd";
-            public const string zoomIn = "Timeline/ZoomIn";
-            public const string zoomOut = "Timeline/ZoomOut";
             public const string navigateLeft = "Timeline/NavigateLeft";
             public const string navigateRight = "Timeline/NavigateRight";
             public const string toggleCollapseTrack = "Timeline/Toggle Collapse Track";
@@ -123,18 +121,6 @@ namespace UnityEditor.Timeline
             static void GoToEnd(ShortcutManagement.ShortcutArguments args)
             {
                 SendEventToInvokeShortcut(goToEnd, args.context);
-            }
-
-            [UsedImplicitly, ShortcutManagement.Shortcut(zoomIn, typeof(TimelineWindow), KeyCode.Equals)]
-            static void ZoomIn(ShortcutManagement.ShortcutArguments args)
-            {
-                SendEventToInvokeShortcut(zoomIn, args.context);
-            }
-
-            [UsedImplicitly, ShortcutManagement.Shortcut(zoomOut, typeof(TimelineWindow), KeyCode.Minus)]
-            static void ZoomOut(ShortcutManagement.ShortcutArguments args)
-            {
-                SendEventToInvokeShortcut(zoomOut, args.context);
             }
 
             [UsedImplicitly]

@@ -80,7 +80,6 @@ namespace UnityEditor.Timeline
 
     class TimelineZoomManipulator : Manipulator
     {
-        Vector2 m_MouseDownPos = Vector2.zero;
         float m_FocalTime;
         float m_LastMouseMoveX = -1;
         bool m_WheelUsedLast;
@@ -122,13 +121,6 @@ namespace UnityEditor.Timeline
             Instance.m_WheelUsedLast = false;
         }
 
-        protected override bool MouseDown(Event evt, WindowState state)
-        {
-            m_MouseDownPos = evt.mousePosition;
-            m_FocalTime = state.PixelToTime(m_MouseDownPos.x);
-            return false;
-        }
-
         protected override bool MouseWheel(Event evt, WindowState state)
         {
             if (Math.Abs(evt.delta.y) < 1e-5)
@@ -151,38 +143,6 @@ namespace UnityEditor.Timeline
 
             m_WheelUsedLast = true;
             return true;
-        }
-
-        protected override bool MouseDrag(Event evt, WindowState state)
-        {
-            // Fast zoom...
-            if (evt.modifiers != EventModifiers.Alt || evt.button != 1) return false;
-
-            var mouseMoveLength = Event.current.mousePosition - m_MouseDownPos;
-            var delta = Math.Abs(mouseMoveLength.x) > Math.Abs(mouseMoveLength.y)
-                ? mouseMoveLength.x
-                : -mouseMoveLength.y;
-            var zoomFactor = PixelToZoom(delta);
-            DoZoom(zoomFactor, state.timeAreaShownRange, m_FocalTime);
-
-            m_WheelUsedLast = false;
-            return true;
-        }
-
-        static float PixelToZoom(float x)
-        {
-            const float pixel2Zoom = 1 / 300.0f;
-            x *= pixel2Zoom;
-            if (x < -0.75)
-            {
-                // Rational function that behaves like 1+x on [-0.75,inf) and asymptotically reaches zero on (-inf,-0.75]
-                // The coefficients were obtained by the following constraints:
-                //1) f(-0.75) = 0.25
-                //2) f'(-0.75) = 1 C1 continuity
-                //3) f(-3) = 0.001 (asymptotically zero)
-                return 1 / (98.6667f + 268.444f * x + 189.63f * x * x);
-            }
-            return 1 + x;
         }
     }
 
