@@ -25,9 +25,9 @@ namespace UnityEditor.Timeline
         public Color trackColor { get; set; }
 
         /// <summary>
-        /// The minimum height of the track.
+        /// The height of the track.
         /// </summary>
-        public float minimumHeight { get; set; }
+        public float height { get; set; }
 
         /// <summary>
         /// The icon displayed on the track header.
@@ -59,7 +59,7 @@ namespace UnityEditor.Timeline
         {
             return errorText == other.errorText &&
                 trackColor == other.trackColor &&
-                minimumHeight == other.minimumHeight &&
+                height == other.height &&
                 icon == other.icon;
         }
 
@@ -72,7 +72,7 @@ namespace UnityEditor.Timeline
             return HashUtility.CombineHash(
                 errorText != null ? errorText.GetHashCode() : 0,
                 trackColor.GetHashCode(),
-                minimumHeight.GetHashCode(),
+                height.GetHashCode(),
                 icon != null ? icon.GetHashCode() : 0
             );
         }
@@ -158,17 +158,7 @@ namespace UnityEditor.Timeline
         /// <summary>
         /// The default height of a track.
         /// </summary>
-        public static readonly float DefaultTrackHeight = 30.0f;
-
-        /// <summary>
-        /// The minimum unscaled height of a track.
-        /// </summary>
-        public static readonly float MinimumTrackHeight = 10.0f;
-
-        /// <summary>
-        /// The maximum height of a track.
-        /// </summary>
-        public static readonly float MaximumTrackHeight = 256.0f;
+        public const float DefaultTrackHeight = 24;
 
         /// <summary>
         /// Implement this method to override the default options for drawing a track.
@@ -181,7 +171,7 @@ namespace UnityEditor.Timeline
             return new TrackDrawOptions()
             {
                 errorText = GetErrorText(track, binding, TrackBindingErrors.All),
-                minimumHeight = DefaultTrackHeight,
+                height = DefaultTrackHeight,
                 trackColor = GetTrackColor(track),
                 icon = null
             };

@@ -11,7 +11,7 @@ namespace UnityEditor.Timeline
         public override TrackDrawOptions GetTrackOptions(TrackAsset track, Object binding)
         {
             var options = base.GetTrackOptions(track, binding);
-            options.minimumHeight = DefaultMarkerTrackHeight;
+            options.height = DefaultMarkerTrackHeight;
             return options;
         }
     }

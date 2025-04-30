@@ -97,7 +97,7 @@ namespace UnityEditor.Timeline
             }
         }
 
-        float minimumHeight => m_TrackDrawOptions.minimumHeight <= 0.0f ? TrackEditor.DefaultTrackHeight : m_TrackDrawOptions.minimumHeight;
+        float height => m_TrackDrawOptions.height <= 0.0f ? TrackEditor.DefaultTrackHeight : m_TrackDrawOptions.height;
 
         public TimelineTrackGUI(TreeViewController tv, TimelineTreeViewGUI w, int id, int depth, TreeViewItem parent, string displayName, TrackAsset sequenceActor)
             : base(tv, w, id, depth, parent, displayName, sequenceActor, false)
@@ -172,17 +172,12 @@ namespace UnityEditor.Timeline
                     m_TrackDrawData.m_TrackBinding = state.editSequence.director.GetGenericBinding(track);
                 }
 
-                var lastHeight = m_TrackDrawOptions.minimumHeight;
                 m_TrackDrawOptions = m_TrackEditor.GetTrackOptions_Safe(track, m_TrackDrawData.m_TrackBinding);
 
                 m_TrackDrawData.m_AllowsRecording = DoesTrackAllowsRecording(track);
                 m_TrackDrawData.m_TrackIcon = m_TrackDrawOptions.icon;
                 if (m_TrackDrawData.m_TrackIcon == null)
                     m_TrackDrawData.m_TrackIcon = m_DefaultTrackIcon.image;
-
-                // track height has changed. need to update gui
-                if (!Mathf.Approximately(lastHeight, m_TrackDrawOptions.minimumHeight))
-                    state.Refresh();
             }
         }
 
@@ -273,8 +268,7 @@ namespace UnityEditor.Timeline
 
         float GetTrackContentHeight(WindowState state)
         {
-            var defaultHeight = Mathf.Min(minimumHeight, TrackEditor.MaximumTrackHeight);
-            return (defaultHeight + 0) * state.trackScale;
+            return height;
         }
 
         static bool CanDrawIcon(GUIContent icon)

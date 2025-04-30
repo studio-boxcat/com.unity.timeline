@@ -195,16 +195,6 @@ namespace UnityEditor.Timeline
 
         public float mainAreaWidth { get; set; }
 
-        public float trackScale
-        {
-            get { return editSequence.viewModel.trackScale; }
-            set
-            {
-                editSequence.viewModel.trackScale = value;
-                m_Window.treeView.CalculateRowRects();
-            }
-        }
-
         public int dirtyStamp
         {
             get { return m_DirtyStamp; }
@@ -799,8 +789,7 @@ namespace UnityEditor.Timeline
         public void UpdateViewStateHash()
         {
             viewStateHash = timeAreaTranslation.GetHashCode()
-                .CombineHash(timeAreaScale.GetHashCode())
-                .CombineHash(trackScale.GetHashCode());
+                .CombineHash(timeAreaScale.GetHashCode());
         }
 
         public bool IsEditingASubTimeline()

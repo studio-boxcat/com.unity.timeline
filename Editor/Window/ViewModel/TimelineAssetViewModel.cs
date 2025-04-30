@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.Timeline;
 
@@ -47,14 +46,12 @@ namespace UnityEditor.Timeline
     [Serializable]
     partial class TimelineAssetViewModel : ScriptableObject, ISerializationCallbackReceiver
     {
-        public const float DefaultTrackScale = 1.0f;
         public const float DefaultVerticalScroll = 0;
         public static readonly Vector2 TimeAreaDefaultRange = new Vector2(-WindowConstants.timeAreaShownRangePadding, 5.0f); // in seconds. Hack: using negative value to force the UI to have a left margin at 0.
         public static readonly PlayRange NoPlayRangeSet = new PlayRange(double.MaxValue, double.MaxValue);
 
 
         public Vector2 timeAreaShownRange = TimeAreaDefaultRange;
-        public float trackScale = DefaultTrackScale;
         public bool playRangeEnabled;
 
         public PlayRange timeAreaPlayRange

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace UnityEditor.Timeline
 {
     partial class TimelineWindow
@@ -17,7 +15,6 @@ namespace UnityEditor.Timeline
             // Manipulators that needs to be processed BEFORE the treeView (mainly anything clip related)
             m_PreTreeViewControl.AddManipulator(new HeaderSplitterManipulator());
             m_PreTreeViewControl.AddManipulator(new TimelinePanManipulator());
-            m_PreTreeViewControl.AddManipulator(new TrackZoom());
             m_PreTreeViewControl.AddManipulator(new Jog());
             m_PreTreeViewControl.AddManipulator(TimelineZoomManipulator.Instance);
             m_PreTreeViewControl.AddManipulator(new ContextMenuManipulator());
