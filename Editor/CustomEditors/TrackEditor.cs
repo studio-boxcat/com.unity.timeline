@@ -158,7 +158,7 @@ namespace UnityEditor.Timeline
         /// <summary>
         /// The default height of a track.
         /// </summary>
-        public const float DefaultTrackHeight = 24;
+        public const float DefaultTrackHeight = 20;
 
         /// <summary>
         /// Implement this method to override the default options for drawing a track.

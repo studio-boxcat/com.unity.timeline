@@ -17,7 +17,6 @@ namespace UnityEditor.Timeline
         float m_MaxWidthOfRows;
         readonly WindowState m_State;
 
-        static readonly float kMinTrackHeight = 25.0f;
         static readonly float kFoldOutOffset = 14.0f;
 
         static DirectorStyles m_Styles;
@@ -126,13 +125,7 @@ namespace UnityEditor.Timeline
                 return new Vector2(m_TreeView.GetTotalRect().width, trackGroupGui.GetHeight(m_State));
             }
 
-            float height = TrackEditor.DefaultTrackHeight;
-            if (item.hasChildren && m_TreeView.data.IsExpanded(item))
-            {
-                height = Mathf.Min(TrackEditor.DefaultTrackHeight, kMinTrackHeight);
-            }
-
-            return new Vector2(m_TreeView.GetTotalRect().width, height);
+            return new Vector2(m_TreeView.GetTotalRect().width, TrackEditor.DefaultTrackHeight);
         }
 
         public virtual void BeginRowGUI()
