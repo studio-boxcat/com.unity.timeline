@@ -164,9 +164,6 @@ namespace UnityEditor.Timeline
             var buttonRect = new Rect(x, y, buttonSize, buttonSize);
 
             DrawTrackDropDownMenu(buttonRect);
-            buttonRect.x -= 21.0f;
-
-            DrawMuteButton(buttonRect, data);
         }
 
         static void DrawMarkerDrawerContentBackground(DrawData data)
@@ -202,13 +199,6 @@ namespace UnityEditor.Timeline
                 SelectionManager.SelectOnly(TimelineEditor.inspectedAsset.markerTrack);
                 SequencerContextMenu.ShowTrackContextMenu(null);
             }
-        }
-
-        static void DrawMuteButton(Rect rect, DrawData data)
-        {
-            bool muted = GUI.Toggle(rect, data.isMuted, string.Empty, TimelineWindow.styles.trackMuteButton);
-            if (muted != data.isMuted)
-                new[] { TimelineEditor.inspectedAsset.markerTrack }.Invoke<MuteTrack>();
         }
 
         bool IsSelected()

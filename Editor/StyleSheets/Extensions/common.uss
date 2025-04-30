@@ -124,16 +124,6 @@
     -unity-stretch-width: false;
 }
 
-.trackAvatarMaskButton {
-    height: 16;
-    width: 16;
-    -unity-text-align: middle-center;
-    font-size: --unity-font-size
-    -unity-image-position: image-only;
-    -unity-rich-text: false;
-    -unity-stretch-width: false;
-}
-
 .Icon-ClipIn {
     /* GUIStyle.alignment */
     -unity-text-align: middle-center;
@@ -301,13 +291,6 @@
     width: 9;
 
     /* GUIStyle.imagePosition */
-    -unity-image-position: image-only;
-}
-
-.trackCollapseMarkerButton {
-    -unity-text-align: middle-center;
-    height: 16;
-    width: 16;
     -unity-image-position: image-only;
 }
 
@@ -540,26 +523,6 @@
     -unity-rich-text: false;
     -unity-stretch-width: false;
     color: rgb(37, 45, 50);
-}
-
-.trackMuteButton {
-    -unity-text-align: middle-center;
-    height: 16;
-    width: 16;
-    font-size: --unity-font-size;
-    -unity-image-position: image-only;
-    -unity-rich-text: false;
-    -unity-stretch-width: false;
-}
-
-.trackLockButton {
-    -unity-text-align: middle-center;
-    height: 16;
-    width: 16;
-    font-size: --unity-font-size;
-    -unity-image-position: image-only;
-    -unity-rich-text: false;
-    -unity-stretch-width: false;
 }
 
 .Icon-Options {

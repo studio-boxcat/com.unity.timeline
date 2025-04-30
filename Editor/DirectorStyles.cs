@@ -77,8 +77,6 @@ namespace UnityEditor.Timeline
         public GUIStyle endmarker;
         public GUIStyle tinyFont;
         public GUIStyle foldout;
-        public GUIStyle trackMuteButton;
-        public GUIStyle trackLockButton;
         public GUIStyle trackRecordButton;
         public GUIStyle playTimeRangeStart;
         public GUIStyle playTimeRangeEnd;
@@ -91,7 +89,6 @@ namespace UnityEditor.Timeline
         public GUIStyle extrapolationLoop;
         public GUIStyle extrapolationPingPong;
         public GUIStyle extrapolationContinue;
-        public GUIStyle trackMarkerButton;
         public GUIStyle markerMultiOverlay;
         public GUIStyle bottomShadow;
         public GUIStyle trackOptions;
@@ -248,8 +245,6 @@ namespace UnityEditor.Timeline
             timeCursor = GetGUIStyle("Icon-TimeCursor");
             tinyFont = GetGUIStyle("tinyFont");
             foldout = GetGUIStyle("Icon-Foldout");
-            trackMuteButton = GetGUIStyle("trackMuteButton");
-            trackLockButton = GetGUIStyle("trackLockButton");
             trackRecordButton = GetGUIStyle("trackRecordButton");
             playTimeRangeStart = GetGUIStyle("Icon-PlayAreaStart");
             playTimeRangeEnd = GetGUIStyle("Icon-PlayAreaEnd");
@@ -272,7 +267,6 @@ namespace UnityEditor.Timeline
             activation = GetGUIStyle("Icon-Activation");
             playrange = GetGUIStyle("Icon-Playrange");
             timelineLockButton = GetGUIStyle("IN LockButton");
-            trackMarkerButton = GetGUIStyle("trackCollapseMarkerButton");
             markerMultiOverlay = GetGUIStyle("MarkerMultiOverlay");
             editModeBtn = GetGUIStyle("editModeBtn");
             showMarkersBtn = GetGUIStyle("showMarkerBtn");

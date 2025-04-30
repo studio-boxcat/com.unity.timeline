@@ -27,8 +27,6 @@ namespace UnityEditor.Timeline
         {
             public static readonly GUIContent trackCurvesBtnOnTooltip = DirectorStyles.TrTextContent(string.Empty, "Hide curves view");
             public static readonly GUIContent trackCurvesBtnOffTooltip = DirectorStyles.TrTextContent(string.Empty, "Show curves view");
-            public static readonly GUIContent trackMarkerBtnOnTooltip = DirectorStyles.TrTextContent(string.Empty, "Collapse Track Markers");
-            public static readonly GUIContent trackMarkerBtnOffTooltip = DirectorStyles.TrTextContent(string.Empty, "Expand Track Markers");
 
             public static readonly GUIContent kActiveRecordButtonTooltip = DirectorStyles.TrTextContent(string.Empty, "End recording");
             public static readonly GUIContent kInactiveRecordButtonTooltip = DirectorStyles.TrTextContent(string.Empty, "Start recording");
@@ -448,26 +446,13 @@ namespace UnityEditor.Timeline
                     return;
 
                 buttonRect.x -= DrawTrackDropDownMenu(buttonRect);
-                var suiteRect = DrawGeneralSuite(state, buttonRect);
-                suiteRect = DrawCustomSuite(state, suiteRect);
+                var suiteRect = DrawCustomSuite(state, buttonRect);
 
                 var bindingRect = new Rect(rect.x, rect.y, suiteRect.xMax - rect.x, rect.height);
                 DrawTrackBinding(bindingRect, trackHeaderRect);
             }
 
             m_ResizeHandle.Draw(trackHeaderRect, state);
-        }
-
-        Rect DrawGeneralSuite(WindowState state, Rect rect)
-        {
-            const float buttonWidth = WindowConstants.trackHeaderButtonSize + WindowConstants.trackHeaderButtonPadding;
-            var padding = DrawButtonSuite(3, ref rect);
-
-            DrawLockMarkersButton(rect, state);
-            rect.x -= buttonWidth;
-
-            rect.x -= padding;
-            return rect;
         }
 
         Rect DrawCustomSuite(WindowState state, Rect rect)
@@ -690,19 +675,6 @@ namespace UnityEditor.Timeline
 
             drawer.DrawTrackHeaderButton(rect, state);
             return WindowConstants.trackHeaderButtonSize + WindowConstants.trackHeaderButtonPadding;
-        }
-
-        void DrawLockMarkersButton(Rect rect, WindowState state)
-        {
-            var hasMarkers = track.GetMarkerCount() != 0;
-            var markersShown = showMarkers && hasMarkers;
-            var style = TimelineWindow.styles.trackMarkerButton;
-
-            EditorGUI.BeginChangeCheck();
-            var tooltip = markersShown ? Styles.trackMarkerBtnOnTooltip : Styles.trackMarkerBtnOffTooltip;
-            var toggleMarkers = GUI.Toggle(rect, markersShown, tooltip, style);
-            if (EditorGUI.EndChangeCheck() && hasMarkers)
-                track.SetShowTrackMarkers(toggleMarkers);
         }
 
         static void ObjectBindingField(Rect position, Object obj, PlayableBinding binding, int controlId)
