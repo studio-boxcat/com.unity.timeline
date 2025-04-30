@@ -357,7 +357,7 @@ namespace UnityEditor.Timeline
             if (trackGUI != null && trackGUI.track != null && trackGUI.track.isSubTrack)
                 depth--;
 
-            return depth * DirectorStyles.kBaseIndent;
+            return (depth - 1) * DirectorStyles.kBaseIndent;
         }
 
         public virtual float GetContentIndent(TreeViewItem item)
