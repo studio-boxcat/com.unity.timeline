@@ -11,9 +11,6 @@ namespace UnityEditor.Timeline
 
         double AdjustStartTime(WindowState state, ItemsPerTrack itemsGroup, double time);
 
-        void OnModeClutchEnter(IEnumerable<ItemsPerTrack> itemsGroups);
-        void OnModeClutchExit(IEnumerable<ItemsPerTrack> itemsGroups);
-
         void BeginMove(IEnumerable<ItemsPerTrack> itemsGroups);
         void UpdateMove(IEnumerable<ItemsPerTrack> itemsGroups);
         void FinishMove(IEnumerable<ItemsPerTrack> itemsGroups);

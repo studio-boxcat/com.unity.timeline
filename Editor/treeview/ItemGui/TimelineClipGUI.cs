@@ -630,33 +630,8 @@ namespace UnityEditor.Timeline
 
             if (canAddEdges)
             {
-                // Hack: Trim Start in Ripple mode should not have any snap point added
-                if (EditMode.editType == EditMode.EditType.Ripple && manipulateEdges == ManipulateEdges.Left)
-                    return edges;
-
                 if (attractable != this)
                 {
-                    if (EditMode.editType == EditMode.EditType.Ripple)
-                    {
-                        bool skip = false;
-
-                        // Hack: Since Trim End and Move in Ripple mode causes other snap point to move on the same track (which is not supported), disable snapping for this special cases...
-                        // TODO Find a proper way to have different snap edges for each edit mode.
-                        if (manipulateEdges == ManipulateEdges.Right)
-                        {
-                            var otherClipGUI = attractable as TimelineClipGUI;
-                            skip = otherClipGUI != null && otherClipGUI.parent == parent;
-                        }
-                        else if (manipulateEdges == ManipulateEdges.Both)
-                        {
-                            var moveHandler = attractable as MoveItemHandler;
-                            skip = moveHandler != null && moveHandler.movingItems.Any(clips => clips.targetTrack == clip.GetParentTrack() && clip.start >= clips.start);
-                        }
-
-                        if (skip)
-                            return edges;
-                    }
-
                     AddEdge(edges, clip.start);
                     AddEdge(edges, clip.end);
                 }

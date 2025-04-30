@@ -86,7 +86,7 @@ namespace UnityEditor.Timeline
 
             // in ripple trim, the right edge moves and needs to snap
             var edges = ManipulateEdges.Right;
-            if (EditMode.editType != EditMode.EditType.Ripple && m_TrimClipHandler.trimDirection == TrimEdge.Start)
+            if (m_TrimClipHandler.trimDirection == TrimEdge.Start)
                 edges = ManipulateEdges.Left;
             m_SnapEngine = new SnapEngine(m_TrimClipHandler.clipGUI, new TrimClipAttractionHandler(), edges, state,
                 evt.mousePosition);

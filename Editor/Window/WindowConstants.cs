@@ -13,7 +13,7 @@ namespace UnityEditor.Timeline
         public const float defaultHeaderWidth = 315.0f;
         public const float defaultBindingAreaWidth = 40.0f;
 
-        public const float minHeaderWidth = 195.0f;
+        public const float minHeaderWidth = 100.0f;
         public const float maxHeaderWidth = 650.0f;
         public const float headerSplitterWidth = 6.0f;
         public const float headerSplitterVisualWidth = 2.0f;

@@ -21,7 +21,6 @@ namespace UnityEditor.Timeline
         [Serializable]
         public class TimelineWindowPreferences
         {
-            public EditMode.EditType editType = EditMode.EditType.Mix;
             public TimeReferenceMode timeReferenceMode = TimeReferenceMode.Local;
         }
 
@@ -190,8 +189,6 @@ namespace UnityEditor.Timeline
             InitializeGUIIfRequired();
             UpdateGUIConstants();
             UpdateViewStateHash();
-
-            EditMode.HandleModeClutch(); // TODO We Want that here?
 
             DetectStylesChange();
             DetectActiveSceneChanges();

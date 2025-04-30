@@ -26,12 +26,6 @@ namespace UnityEditor.Timeline
         public static readonly GUIContent createNewTimelineText = TrTextContent("Create a new Timeline and Director Component for Game Object");
         public static readonly GUIContent previewContent = TrTextContent("Preview", "Enable/disable scene preview mode");
         public static readonly GUIContent previewDisabledContent = L10n.TextContentWithIcon("Preview", "Scene preview is disabled for this TimelineAsset", MessageType.Info);
-        public static readonly GUIContent mixOff = TrIconContent("TimelineEditModeMixOFF", "Mix Mode (1)");
-        public static readonly GUIContent mixOn = TrIconContent("TimelineEditModeMixON", "Mix Mode (1)");
-        public static readonly GUIContent rippleOff = TrIconContent("TimelineEditModeRippleOFF", "Ripple Mode (2)");
-        public static readonly GUIContent rippleOn = TrIconContent("TimelineEditModeRippleON", "Ripple Mode (2)");
-        public static readonly GUIContent replaceOff = TrIconContent("TimelineEditModeReplaceOFF", "Replace Mode (3)");
-        public static readonly GUIContent replaceOn = TrIconContent("TimelineEditModeReplaceON", "Replace Mode (3)");
         public static readonly GUIContent showMarkersOn = TrIconContent("TimelineCollapseMarkerButtonEnabled", "Show / Hide Timeline Markers");
         public static readonly GUIContent showMarkersOff = TrIconContent("TimelineCollapseMarkerButtonDisabled", "Show / Hide Timeline Markers");
         public static readonly GUIContent showMarkersOnTimeline = TrTextContent("Show markers");
@@ -57,8 +51,6 @@ namespace UnityEditor.Timeline
 
         // TODO: Make skinnable? If we do, we should probably also make the associated cursors skinnable...
         public static readonly Color kMixToolColor = Color.white;
-        public static readonly Color kRippleToolColor = new Color(255f / 255f, 210f / 255f, 51f / 255f);
-        public static readonly Color kReplaceToolColor = new Color(165f / 255f, 30f / 255f, 30f / 255f);
 
         public const string markerDefaultStyle = "MarkerItem";
 
@@ -94,7 +86,6 @@ namespace UnityEditor.Timeline
         public GUIStyle playrange;
         public GUIStyle timelineLockButton;
         public GUIStyle markerWarning;
-        public GUIStyle editModeBtn;
         public GUIStyle showMarkersBtn;
         public GUIStyle sequenceSwitcher;
         public GUIStyle timeReferenceButton;
@@ -248,7 +239,6 @@ namespace UnityEditor.Timeline
             playrange = GetGUIStyle("Icon-Playrange");
             timelineLockButton = GetGUIStyle("IN LockButton");
             markerMultiOverlay = GetGUIStyle("MarkerMultiOverlay");
-            editModeBtn = GetGUIStyle("editModeBtn");
             showMarkersBtn = GetGUIStyle("showMarkerBtn");
             markerWarning = GetGUIStyle("markerWarningOverlay");
             sequenceSwitcher = GetGUIStyle("sequenceSwitcher");

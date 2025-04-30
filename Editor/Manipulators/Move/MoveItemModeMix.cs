@@ -47,16 +47,6 @@ namespace UnityEditor.Timeline
             return time;
         }
 
-        public void OnModeClutchEnter(IEnumerable<ItemsPerTrack> itemsGroups)
-        {
-            // Nothing
-        }
-
-        public void OnModeClutchExit(IEnumerable<ItemsPerTrack> itemsGroups)
-        {
-            // Nothing
-        }
-
         public void BeginMove(IEnumerable<ItemsPerTrack> itemsGroups)
         {
             m_ClipsMoved = itemsGroups.SelectMany(i => i.clips).ToArray();

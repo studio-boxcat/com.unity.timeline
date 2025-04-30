@@ -890,15 +890,6 @@
     color: rgba(255, 255, 255, 0.75);
 }
 
-.editModeBtn {
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 4px;
-    padding-bottom: 3px;
-    -unity-extend: ".ToolbarPopup";
-    background-image: resource("");
-}
-
 .showMarkerBtn{
     margin: 0px 0px 6px 6px;
     padding-left: 12px;

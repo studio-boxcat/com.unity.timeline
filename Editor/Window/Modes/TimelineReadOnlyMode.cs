@@ -43,10 +43,5 @@ namespace UnityEditor.Timeline
         {
             return state.editSequence.director == null ? TimelineModeGUIState.Disabled : TimelineModeGUIState.Enabled;
         }
-
-        public override TimelineModeGUIState EditModeButtonsState(WindowState state)
-        {
-            return TimelineModeGUIState.Disabled;
-        }
     }
 }

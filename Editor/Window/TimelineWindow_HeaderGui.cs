@@ -206,32 +206,6 @@ namespace UnityEditor.Timeline
             }
         }
 
-        static void EditModeToolbarGUI(TimelineMode mode)
-        {
-            using (new EditorGUI.DisabledScope(mode.EditModeButtonsState(instance.state) == TimelineModeGUIState.Disabled))
-            {
-                var editType = EditMode.editType;
-
-                EditorGUI.BeginChangeCheck();
-                var mixIcon = editType == EditMode.EditType.Mix ? DirectorStyles.mixOn : DirectorStyles.mixOff;
-                GUILayout.Toggle(editType == EditMode.EditType.Mix, mixIcon, DirectorStyles.Instance.editModeBtn);
-                if (EditorGUI.EndChangeCheck())
-                    EditMode.editType = EditMode.EditType.Mix;
-
-                EditorGUI.BeginChangeCheck();
-                var rippleIcon = editType == EditMode.EditType.Ripple ? DirectorStyles.rippleOn : DirectorStyles.rippleOff;
-                GUILayout.Toggle(editType == EditMode.EditType.Ripple, rippleIcon, DirectorStyles.Instance.editModeBtn);
-                if (EditorGUI.EndChangeCheck())
-                    EditMode.editType = EditMode.EditType.Ripple;
-
-                EditorGUI.BeginChangeCheck();
-                var replaceIcon = editType == EditMode.EditType.Replace ? DirectorStyles.replaceOn : DirectorStyles.replaceOff;
-                GUILayout.Toggle(editType == EditMode.EditType.Replace, replaceIcon, DirectorStyles.Instance.editModeBtn);
-                if (EditorGUI.EndChangeCheck())
-                    EditMode.editType = EditMode.EditType.Replace;
-            }
-        }
-
         // Draws the box to enter the time field
         void TimeCodeGUI()
         {
@@ -280,7 +254,6 @@ namespace UnityEditor.Timeline
                 GUILayout.Space(DirectorStyles.kBaseIndent);
                 AddButtonGUI();
                 GUILayout.FlexibleSpace();
-                EditModeToolbarGUI(currentMode);
                 ShowMarkersButton();
                 EditorGUILayout.Space();
             }

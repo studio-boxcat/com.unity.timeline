@@ -460,8 +460,6 @@ namespace UnityEditor.Timeline
             using (new EditorGUI.DisabledScope(IsLocked()))
             using (new LabelWidthScope(0f)) //reset label width to prevent state pollution by unrelated IMGUI code
             {
-                EditMode.HandleModeClutch();
-
                 serializedObject.Update();
                 DrawClipProperties();
                 ApplyModifiedProperties();

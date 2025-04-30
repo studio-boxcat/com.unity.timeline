@@ -346,12 +346,6 @@ namespace UnityEditor.Timeline
             set { GetWindow().SetShowMarkerHeader(value); }
         }
 
-        public EditMode.EditType editType
-        {
-            get { return m_Preferences.editType; }
-            set { m_Preferences.editType = value; }
-        }
-
         public PlaybackScrollMode autoScrollMode
         {
             get { return TimelinePreferences.instance.playbackScrollMode; }
@@ -491,8 +485,6 @@ namespace UnityEditor.Timeline
                 changeStateCallback.Invoke();
             }
         }
-
-        public TimelineWindowAnalytics analytics = new TimelineWindowAnalytics();
 
         public void SetTimeAreaTransform(Vector2 newTranslation, Vector2 newScale)
         {
@@ -709,8 +701,6 @@ namespace UnityEditor.Timeline
             {
                 Pause();
             }
-
-            analytics.SendPlayEvent(start);
         }
 
         public void Stop()
