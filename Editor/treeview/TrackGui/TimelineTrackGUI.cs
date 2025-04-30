@@ -463,10 +463,6 @@ namespace UnityEditor.Timeline
             const float buttonWidth = WindowConstants.trackHeaderButtonSize + WindowConstants.trackHeaderButtonPadding;
             var padding = DrawButtonSuite(3, ref rect);
 
-            DrawMuteButton(rect, state);
-            rect.x -= buttonWidth;
-            DrawLockButton(rect, state);
-            rect.x -= buttonWidth;
             DrawLockMarkersButton(rect, state);
             rect.x -= buttonWidth;
 

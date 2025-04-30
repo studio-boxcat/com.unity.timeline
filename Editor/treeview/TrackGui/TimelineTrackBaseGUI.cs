@@ -14,11 +14,6 @@ namespace UnityEditor.Timeline
             public static readonly GUIContent s_Muted = L10n.TextContent("Muted");
             public static readonly GUIContent s_PartiallyMuted = L10n.TextContent("Partially Muted");
 
-            public static readonly GUIContent trackMuteBtnOnTooltip = L10n.TextContent(string.Empty, "Umute");
-            public static readonly GUIContent trackMuteBtnOffTooltip = L10n.TextContent(string.Empty, "Mute");
-            public static readonly GUIContent trackLockBtnOnTooltip = L10n.TextContent(string.Empty, "Unlock");
-            public static readonly GUIContent trackLockBtnOffTooltip = L10n.TextContent(string.Empty, "Lock");
-
             public static readonly Texture2D lockBg = DirectorStyles.GetBackgroundImage(DirectorStyles.Instance.trackLockOverlay);
         }
 
@@ -154,32 +149,6 @@ namespace UnityEditor.Timeline
                     Color.white,
                     styles.customSkin.colorLockTextBG,
                     styles.displayBackground));
-        }
-
-        protected void DrawMuteButton(Rect rect, WindowState state)
-        {
-            using (new EditorGUI.DisabledScope(TimelineUtility.IsParentMuted(track)))
-            {
-                EditorGUI.BeginChangeCheck();
-                var isMuted = track.mutedInHierarchy;
-                var tooltip = isMuted ? Styles.trackMuteBtnOnTooltip : Styles.trackMuteBtnOffTooltip;
-                var muted = GUI.Toggle(rect, isMuted, tooltip, TimelineWindow.styles.trackMuteButton);
-                if (EditorGUI.EndChangeCheck())
-                    MuteTrack.Mute(new[] { track }, muted);
-            }
-        }
-
-        protected void DrawLockButton(Rect rect, WindowState state)
-        {
-            using (new EditorGUI.DisabledScope(TimelineUtility.IsLockedFromGroup(track)))
-            {
-                EditorGUI.BeginChangeCheck();
-                var isLocked = track.lockedInHierarchy;
-                var tooltip = isLocked ? Styles.trackLockBtnOnTooltip : Styles.trackLockBtnOffTooltip;
-                var locked = GUI.Toggle(rect, track.lockedInHierarchy, tooltip, TimelineWindow.styles.trackLockButton);
-                if (EditorGUI.EndChangeCheck())
-                    LockTrack.SetLockState(new[] { track }, locked);
-            }
         }
 
         public void DrawInsertionMarkers(Rect rowRectWithIndent)

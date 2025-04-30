@@ -104,13 +104,6 @@ namespace UnityEditor.Timeline
                 SequencerContextMenu.ShowNewTracksContextMenu(SelectionManager.SelectedTracks().ToArray(), TimelineWindow.state, buttonRect);
             }
             buttonRect.x -= buttonSize;
-
-            var suitePadding = DrawButtonSuite(2, ref buttonRect);
-
-            DrawMuteButton(buttonRect, state);
-            buttonRect.x -= buttonSize + padding;
-            DrawLockButton(buttonRect, state);
-            buttonRect.x -= suitePadding;
         }
 
         public void SetExpanded(bool expanded)
