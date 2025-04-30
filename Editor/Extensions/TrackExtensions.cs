@@ -350,16 +350,6 @@ namespace UnityEditor.Timeline
             TimelineWindowViewPrefs.SetTrackShowMarkers(track, collapsed);
         }
 
-        internal static bool GetShowInlineCurves(this TrackAsset track)
-        {
-            return TimelineWindowViewPrefs.GetShowInlineCurves(track);
-        }
-
-        internal static void SetShowInlineCurves(this TrackAsset track, bool inlineOn)
-        {
-            TimelineWindowViewPrefs.SetShowInlineCurves(track, inlineOn);
-        }
-
         internal static bool ShouldShowInfiniteClipEditor(this AnimationTrack track)
         {
             return track != null && !track.inClipMode && track.infiniteClip != null;

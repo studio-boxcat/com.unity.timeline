@@ -7,7 +7,7 @@ using UnityEngine.Timeline;
 
 namespace UnityEditor.Timeline
 {
-    class TimelineClipGUI : TimelineItemGUI, IClipCurveEditorOwner, ISnappable, IAttractable
+    class TimelineClipGUI : TimelineItemGUI, ISnappable, IAttractable
     {
         EditorClip m_EditorItem;
 
@@ -24,7 +24,6 @@ namespace UnityEditor.Timeline
         bool m_ClipViewDirty = true;
 
         bool supportResize { get; }
-        public ClipCurveEditor clipCurveEditor { get; set; }
         public TimelineClipGUI previousClip { get; set; }
         public TimelineClipGUI nextClip { get; set; }
 
@@ -49,8 +48,6 @@ namespace UnityEditor.Timeline
                 return clip.displayName;
             }
         }
-
-        public bool inlineCurvesSelected => SelectionManager.IsCurveEditorFocused(this);
 
         public Rect mixOutRect
         {
@@ -109,17 +106,6 @@ namespace UnityEditor.Timeline
             get { return clip.SupportsLooping(); }
         }
 
-        // for the inline curve editor, only show loops if we recorded the asset
-        bool IClipCurveEditorOwner.showLoops
-        {
-            get { return clip.SupportsLooping() && (clip.asset is AnimationPlayableAsset); }
-        }
-
-        TrackAsset IClipCurveEditorOwner.owner
-        {
-            get { return clip.GetParentTrack(); }
-        }
-
         public bool supportsSubTimelines
         {
             get { return m_ClipEditor.supportsSubTimelines; }
@@ -136,8 +122,6 @@ namespace UnityEditor.Timeline
         {
             MoveToTop();
             SelectionManager.Add(clip);
-            if (clipCurveEditor != null && SelectionManager.Count() == 1)
-                SelectionManager.SelectInlineCurveEditor(this);
         }
 
         public override bool IsSelected()
@@ -148,8 +132,6 @@ namespace UnityEditor.Timeline
         public override void Deselect()
         {
             SelectionManager.Remove(clip);
-            if (inlineCurvesSelected)
-                SelectionManager.SelectInlineCurveEditor(null);
         }
 
         public override bool CanSelect(Event evt)
@@ -209,30 +191,6 @@ namespace UnityEditor.Timeline
             ItemToItemGui.Add(clip, this);
         }
 
-        void CreateInlineCurveEditor(WindowState state)
-        {
-            if (clipCurveEditor != null)
-                return;
-
-            var animationClip = clip.animationClip;
-
-            if (animationClip != null && animationClip.empty)
-                animationClip = null;
-
-            // prune out clips coming from FBX
-            if (animationClip != null && !clip.recordable)
-                return; // don't show, even if there are curves
-
-            if (animationClip == null && !clip.HasAnyAnimatableParameters())
-                return; // nothing to show
-
-            state.AddEndFrameDelegate((istate, currentEvent) =>
-            {
-                clipCurveEditor = new ClipCurveEditor(CurveDataSource.Create(this), TimelineWindow.instance, clip.GetParentTrack());
-                return true;
-            });
-        }
-
         public TimelineClip clip
         {
             get { return m_EditorItem.clip; }
@@ -247,7 +205,6 @@ namespace UnityEditor.Timeline
             m_ClipDrawData.unclippedRect = treeViewRect;
             m_ClipDrawData.title = title;
             m_ClipDrawData.selected = selected;
-            m_ClipDrawData.inlineCurvesSelected = inlineCurvesSelected;
             m_ClipDrawData.previousClip = previousClip != null ? previousClip.clip : null;
             m_ClipDrawData.previousClipSelected = previousClipSelected;
 
@@ -352,9 +309,6 @@ namespace UnityEditor.Timeline
         {
             if (Event.current.type != EventType.Repaint)
                 return;
-
-            // create the inline curve editor if not already created
-            CreateInlineCurveEditor(state);
 
             // @todo optimization, most of the calculations (rect, offsets, colors, etc.) could be cached
             // and rebuilt when the hash of the clip changes.
@@ -779,18 +733,6 @@ namespace UnityEditor.Timeline
             var shownTime = TimelineWindow.instance.state.timeAreaShownRange;
             if (time >= shownTime.x && time <= shownTime.y)
                 edges.Add(new Edge(time, showEdgeHint));
-        }
-
-        public void SelectCurves()
-        {
-            SelectionManager.SelectOnly(clip);
-            SelectionManager.SelectInlineCurveEditor(this);
-        }
-
-        public void ValidateCurvesSelection()
-        {
-            if (!IsSelected()) //if clip is not selected, deselect the inline curve
-                SelectionManager.SelectInlineCurveEditor(null);
         }
     }
 }

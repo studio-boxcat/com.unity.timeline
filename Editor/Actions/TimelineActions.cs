@@ -356,7 +356,7 @@ namespace UnityEditor.Timeline
             selectedItems.AddRange(context.markers.Select(p => p.ToItem()));
             DeleteItems(selectedItems);
 
-            if (context.tracks.Any() && SelectionManager.GetCurrentInlineEditorCurve() == null)
+            if (context.tracks.Any())
                 context.tracks.Invoke<DeleteTracks>();
 
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved);
@@ -474,13 +474,6 @@ namespace UnityEditor.Timeline
 
         public override bool Execute(ActionContext actionContext)
         {
-            var inlineCurveEditor = SelectionManager.GetCurrentInlineEditorCurve();
-            if (FrameSelectedAction.ShouldHandleInlineCurve(inlineCurveEditor))
-            {
-                FrameSelectedAction.FrameInlineCurves(inlineCurveEditor, false);
-                return true;
-            }
-
             if (TimelineWindow.instance.state.IsCurrentEditingASequencerTextField())
                 return false;
 
@@ -550,13 +543,6 @@ namespace UnityEditor.Timeline
 
         public override bool Execute(ActionContext actionContext)
         {
-            var inlineCurveEditor = SelectionManager.GetCurrentInlineEditorCurve();
-            if (ShouldHandleInlineCurve(inlineCurveEditor))
-            {
-                FrameInlineCurves(inlineCurveEditor, true);
-                return true;
-            }
-
             if (TimelineWindow.instance.state.IsCurrentEditingASequencerTextField())
                 return false;
 
@@ -578,10 +564,6 @@ namespace UnityEditor.Timeline
             {
                 startTime = Mathf.Min(startTime, (float)c.clip.start);
                 endTime = Mathf.Max(endTime, (float)c.clip.end);
-                if (c.clipCurveEditor != null)
-                {
-                    c.clipCurveEditor.FrameClip();
-                }
             }
 
             foreach (var marker in markers)
@@ -593,46 +575,6 @@ namespace UnityEditor.Timeline
             FrameRange(startTime, endTime);
 
             return true;
-        }
-
-        public static bool ShouldHandleInlineCurve(IClipCurveEditorOwner curveEditorOwner)
-        {
-            return curveEditorOwner?.clipCurveEditor != null &&
-                curveEditorOwner.inlineCurvesSelected &&
-                curveEditorOwner.owner != null &&
-                curveEditorOwner.owner.GetShowInlineCurves();
-        }
-
-        public static void FrameInlineCurves(IClipCurveEditorOwner curveEditorOwner, bool selectionOnly)
-        {
-            var curveEditor = curveEditorOwner.clipCurveEditor.curveEditor;
-            var frameBounds = selectionOnly ? curveEditor.GetSelectionBounds() : curveEditor.GetClipBounds();
-
-            var clipGUI = curveEditorOwner as TimelineClipGUI;
-            var areaOffset = 0.0f;
-
-            if (clipGUI != null)
-            {
-                areaOffset = (float)Math.Max(0.0, clipGUI.clip.FromLocalTimeUnbound(0.0));
-
-                var timeScale = (float)clipGUI.clip.timeScale;  // Note: The getter for clip.timeScale is guaranteed to never be zero.
-
-                // Apply scaling
-                var newMin = frameBounds.min.x / timeScale;
-                var newMax = (frameBounds.max.x - frameBounds.min.x) / timeScale + newMin;
-
-                frameBounds.SetMinMax(
-                    new Vector3(newMin, frameBounds.min.y, frameBounds.min.z),
-                    new Vector3(newMax, frameBounds.max.y, frameBounds.max.z));
-            }
-
-            curveEditor.Frame(frameBounds, true, true);
-
-            var area = curveEditor.shownAreaInsideMargins;
-            area.x += areaOffset;
-
-            var curveStart = curveEditorOwner.clipCurveEditor.dataSource.start;
-            FrameRange(curveStart + frameBounds.min.x, curveStart + frameBounds.max.x);
         }
     }
 
@@ -938,22 +880,6 @@ namespace UnityEditor.Timeline
 
             IEnumerable<TrackAsset> keyableTracks = GetKeyableTracks(state, actionContext);
 
-            var curveSelected = SelectionManager.GetCurrentInlineEditorCurve();
-            if (curveSelected != null)
-            {
-                var sel = curveSelected.clipCurveEditor.GetSelectedProperties().ToList();
-                var go = (director.GetGenericBinding(curveSelected.owner) as Component).gameObject;
-                if (sel.Count > 0)
-                {
-                    TimelineRecording.KeyProperties(go, state, sel);
-                }
-                else
-                {
-                    var binding = director.GetGenericBinding(curveSelected.owner) as Component;
-                    TimelineRecording.KeyAllProperties(binding, state);
-                }
-            }
-            else
             {
                 foreach (var track in keyableTracks)
                 {
@@ -988,13 +914,6 @@ namespace UnityEditor.Timeline
 
             if (context.tracks.ContainsTimelineMarkerTrack(context.timeline))
                 return false;
-
-            IClipCurveEditorOwner curveSelected = SelectionManager.GetCurrentInlineEditorCurve();
-            // Can't have an inline curve selected and have multiple tracks also.
-            if (curveSelected != null)
-            {
-                return state.IsArmedForRecord(curveSelected.owner);
-            }
 
             return GetKeyableTracks(state, context).Any();
         }

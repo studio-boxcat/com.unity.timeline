@@ -94,7 +94,6 @@ namespace UnityEditor.Timeline
         public Rect clipCenterSection;        // clip center section
         public string title;                  // clip title
         public bool selected;                 // is the clip selected
-        public bool inlineCurvesSelected;     // is the inline curve of the clip selected
         public double localVisibleStartTime;
         public double localVisibleEndTime;
         public IconData[] leftIcons;
@@ -579,7 +578,7 @@ namespace UnityEditor.Timeline
 
             if (drawData.targetRect.width >= k_ClipLoopsMinWidth)
             {
-                bool selected = drawData.selected || drawData.inlineCurvesSelected;
+                bool selected = drawData.selected;
 
                 if (selected)
                 {

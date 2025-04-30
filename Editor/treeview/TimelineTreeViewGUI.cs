@@ -153,11 +153,6 @@ namespace UnityEditor.Timeline
             TimelineWindowViewPrefs.GetOrCreateViewModel(m_Timeline).verticalScroll = m_TreeView.state.scrollPos.y;
         }
 
-        public Rect GetRowRect(int row)
-        {
-            return m_TimelineTreeView.GetRowRect(row);
-        }
-
         static void AddVisibleTrackRecursive(ref List<TimelineTrackBaseGUI> list, TimelineTrackBaseGUI track)
         {
             if (track == null)

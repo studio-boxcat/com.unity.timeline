@@ -36,16 +36,6 @@
     background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineClipGradientSelected.png");
 }
 
-.trackCurvesButton {
-    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/Icons/d_TrackCurvesButtonDisabled.png");
-    -unity-scaled-backgrounds: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/Icons/d_TrackCurvesButtonDisabled@2x.png");
-}
-
-.trackCurvesButton:checked {
-    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/Icons/d_TrackCurvesButtonEnabled.png");
-    -unity-scaled-backgrounds: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/Icons/d_TrackCurvesButtonEnabled@2x.png");
-}
-
 .Icon-Endmarker {
     /* GUIState.textColor */
     color: rgb(61, 94, 152);

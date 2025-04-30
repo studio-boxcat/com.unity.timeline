@@ -95,7 +95,6 @@ namespace UnityEditor.Timeline
         public GUIStyle infiniteTrack;
         public GUIStyle clipOut;
         public GUIStyle clipIn;
-        public GUIStyle trackCurvesButton;
         public GUIStyle trackLockOverlay;
         public GUIStyle activation;
         public GUIStyle playrange;
@@ -104,7 +103,6 @@ namespace UnityEditor.Timeline
         public GUIStyle editModeBtn;
         public GUIStyle showMarkersBtn;
         public GUIStyle sequenceSwitcher;
-        public GUIStyle inlineCurveHandle;
         public GUIStyle timeReferenceButton;
         public GUIStyle trackButtonSuite;
         public GUIStyle previewButtonDisabled;
@@ -262,7 +260,6 @@ namespace UnityEditor.Timeline
             infiniteTrack = GetGUIStyle("Icon-InfiniteTrack");
             clipOut = GetGUIStyle("Icon-ClipOut");
             clipIn = GetGUIStyle("Icon-ClipIn");
-            trackCurvesButton = GetGUIStyle("trackCurvesButton");
             trackLockOverlay = GetGUIStyle("trackLockOverlay");
             activation = GetGUIStyle("Icon-Activation");
             playrange = GetGUIStyle("Icon-Playrange");
@@ -272,7 +269,6 @@ namespace UnityEditor.Timeline
             showMarkersBtn = GetGUIStyle("showMarkerBtn");
             markerWarning = GetGUIStyle("markerWarningOverlay");
             sequenceSwitcher = GetGUIStyle("sequenceSwitcher");
-            inlineCurveHandle = GetGUIStyle("RL DragHandle");
             timeReferenceButton = GetGUIStyle("timeReferenceButton");
             trackButtonSuite = GetGUIStyle("trackButtonSuite");
             previewButtonDisabled = GetGUIStyle("previewButtonDisabled");

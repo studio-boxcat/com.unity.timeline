@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using UnityEditor.ShortcutManagement;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
@@ -225,50 +223,6 @@ namespace UnityEditor.Timeline
             }
 
             return ActionManager.HandleShortcut(evt);
-        }
-    }
-
-    class InlineCurvesShortcutManipulator : Manipulator
-    {
-        protected override bool ExecuteCommand(Event evt, WindowState state)
-        {
-            if (state.IsCurrentEditingASequencerTextField())
-                return false;
-
-            var inlineCurveEditor = SelectionManager.GetCurrentInlineEditorCurve();
-            if (inlineCurveEditor == null || !inlineCurveEditor.inlineCurvesSelected)
-                return false;
-
-            if (evt.commandName != EventCommandNames.FrameSelected)
-                return false;
-
-            Invoker.InvokeWithSelected<FrameSelectedAction>();
-            return true;
-        }
-
-        // CurveEditor uses an hardcoded shortcut to execute the FrameAll action, preventing the ShortcutManager from
-        // ever picking it up. We have to hijack it to ensure our code is being run when framing inline curves.
-        protected override bool KeyDown(Event evt, WindowState state)
-        {
-            var inlineCurveEditor = SelectionManager.GetCurrentInlineEditorCurve();
-            if (inlineCurveEditor == null || !inlineCurveEditor.inlineCurvesSelected)
-                return false;
-
-            // Not conflicting with the hardcoded value
-            if (evt.keyCode != KeyCode.A)
-                return false;
-
-            var combination = ShortcutManager.instance.GetShortcutBinding(Shortcuts.Timeline.frameAll)
-                .keyCombinationSequence.ToList();
-
-            var shortcutCombination = combination.First();
-            var currentCombination = KeyCombination.FromKeyboardInput(evt);
-
-            // User is not actually pressing the correct key combination for FrameAll
-            if (combination.Count() == 1 && shortcutCombination.Equals(currentCombination))
-                Invoker.InvokeWithSelected<FrameAllAction>();
-
-            return true;
         }
     }
 }

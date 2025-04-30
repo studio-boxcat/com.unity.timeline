@@ -162,7 +162,6 @@ namespace UnityEngine.Timeline
 
 
 #if UNITY_EDITOR
-        private AnimationClip m_DefaultPoseClip;
         private AnimationClip m_CachedPropertiesClip;
         private int           m_CachedHash;
         private EditorCurveBinding[] m_CachedBindings;
@@ -618,7 +617,7 @@ namespace UnityEngine.Timeline
             if (Application.isPlaying)
                 return 0;
 
-            return ((m_CachedPropertiesClip != null) ? 1 : 0) + ((m_DefaultPoseClip != null) ? 1 : 0);
+            return ((m_CachedPropertiesClip != null) ? 1 : 0);
 #else
             return 0;
 #endif
@@ -643,18 +642,6 @@ namespace UnityEngine.Timeline
                     defaults = AttachOffsetPlayable(graph, defaults, m_SceneOffsetPosition, Quaternion.Euler(m_SceneOffsetRotation));
                 graph.Connect(defaults, 0, mixer, mixerInput);
                 mixer.SetInputWeight(mixerInput, 1.0f);
-                mixerInput++;
-            }
-
-            if (m_DefaultPoseClip)
-            {
-                var defaultPose = AnimationClipPlayable.Create(graph, m_DefaultPoseClip);
-                defaultPose.SetApplyFootIK(false);
-                var blendDefault = (Playable)defaultPose;
-                if (requireOffset)
-                    blendDefault = AttachOffsetPlayable(graph, blendDefault, m_SceneOffsetPosition, Quaternion.Euler(m_SceneOffsetRotation));
-                graph.Connect(blendDefault, 0, mixer, mixerInput);
-                mixer.SetInputWeight(mixerInput, 1.0f);
             }
 #endif
         }
@@ -666,24 +653,6 @@ namespace UnityEngine.Timeline
             graph.Connect(playable, 0, offsetPlayable, 0);
             return offsetPlayable;
         }
-
-#if UNITY_EDITOR
-        private static string k_DefaultHumanoidClipPath = "Packages/com.unity.timeline/Editor/StyleSheets/res/HumanoidDefault.anim";
-        private static AnimationClip s_DefaultHumanoidClip = null;
-
-        AnimationClip GetDefaultHumanoidClip()
-        {
-            if (s_DefaultHumanoidClip == null)
-            {
-                s_DefaultHumanoidClip = AssetDatabase.LoadAssetAtPath<AnimationClip>(k_DefaultHumanoidClipPath);
-                if (s_DefaultHumanoidClip == null)
-                    Debug.LogError("Could not load default humanoid animation clip for Timeline");
-            }
-
-            return s_DefaultHumanoidClip;
-        }
-
-#endif
 
         bool RequiresMotionXPlayable(AppliedOffsetMode mode, GameObject gameObject)
         {
@@ -875,21 +844,9 @@ namespace UnityEngine.Timeline
             var animClips = new List<AnimationClip>(this.clips.Length + 2);
             GetAnimationClips(animClips);
 
-            var hasHumanMotion = animClips.Exists(clip => clip.humanMotion);
-            // case 1174752 - recording root transform on humanoid clips clips cause invalid pose. This will apply the default T-Pose, only if it not already driven by another track
-            if (!hasHumanMotion && animator.isHuman && AnimatesRootTransform() &&
-                !DrivenPropertyManagerInternal.IsDriven(animator.transform, "m_LocalPosition.x") &&
-                !DrivenPropertyManagerInternal.IsDriven(animator.transform, "m_LocalRotation.x"))
-                hasHumanMotion = true;
-
             m_SceneOffsetPosition = animator.transform.localPosition;
             m_SceneOffsetRotation = animator.transform.localEulerAngles;
 
-            // Create default pose clip from collected properties
-            if (hasHumanMotion)
-                animClips.Add(GetDefaultHumanoidClip());
-
-            m_DefaultPoseClip = hasHumanMotion ? GetDefaultHumanoidClip() : null;
             var hash = AnimationPreviewUtilities.GetClipHash(animClips);
             if (m_CachedBindings == null || m_CachedHash != hash)
             {

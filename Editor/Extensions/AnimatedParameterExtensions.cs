@@ -12,11 +12,6 @@ namespace UnityEditor.Timeline
             return AnimatedParameterUtility.HasAnyAnimatableParameters(curvesOwner.asset);
         }
 
-        public static IEnumerable<SerializedProperty> GetAllAnimatableParameters(this ICurvesOwner curvesOwner)
-        {
-            return AnimatedParameterUtility.GetAllAnimatableParameters(curvesOwner.asset);
-        }
-
         public static bool IsParameterAnimatable(this ICurvesOwner curvesOwner, string parameterName)
         {
             return AnimatedParameterUtility.IsParameterAnimatable(curvesOwner.asset, parameterName);

@@ -39,41 +39,6 @@ namespace UnityEditor.Timeline
             return asset;
         }
 
-        public static bool TrackHasAnimationCurves(TrackAsset track)
-        {
-            if (track.hasCurves)
-                return true;
-
-            var animTrack = track as AnimationTrack;
-            if (animTrack != null && animTrack.infiniteClip != null && !animTrack.infiniteClip.empty)
-                return true;
-
-            for (int i = 0; i < track.clips.Length; i++)
-            {
-                var curveClip = track.clips[i].curves;
-                var animationClip = track.clips[i].animationClip;
-
-                // prune out clip with zero curves
-                if (curveClip != null && curveClip.empty)
-                    curveClip = null;
-
-                if (animationClip != null && animationClip.empty)
-                    animationClip = null;
-
-                // prune out clips coming from FBX
-                if (animationClip != null && ((animationClip.hideFlags & HideFlags.NotEditable) != 0))
-                    animationClip = null;
-
-                if (!track.clips[i].recordable)
-                    animationClip = null;
-
-                if ((curveClip != null) || (animationClip != null))
-                    return true;
-            }
-
-            return false;
-        }
-
         // get the game object reference associated with this
         public static GameObject GetSceneGameObject(PlayableDirector director, TrackAsset asset)
         {

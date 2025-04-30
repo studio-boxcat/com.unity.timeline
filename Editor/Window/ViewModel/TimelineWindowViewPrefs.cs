@@ -1,6 +1,4 @@
-using UnityEngine;
 using UnityEngine.Timeline;
-using UnityObject = UnityEngine.Object;
 using ViewModelsMap = System.Collections.Generic.Dictionary<UnityEngine.Timeline.TimelineAsset, UnityEditor.Timeline.ScriptableObjectViewPrefs<UnityEditor.Timeline.TimelineAssetViewModel>>;
 using ViewModelsList = System.Collections.Generic.List<UnityEditor.Timeline.ScriptableObjectViewPrefs<UnityEditor.Timeline.TimelineAssetViewModel>>;
 
@@ -135,50 +133,6 @@ namespace UnityEditor.Timeline
                 return;
 
             GetTrackViewModelData(track).showMarkers = collapsed;
-        }
-
-        public static bool GetShowInlineCurves(TrackAsset track)
-        {
-            if (track == null)
-                return false;
-
-            return GetTrackViewModelData(track).showInlineCurves;
-        }
-
-        public static void SetShowInlineCurves(TrackAsset track, bool inlineOn)
-        {
-            if (track == null)
-                return;
-
-            GetTrackViewModelData(track).showInlineCurves = inlineOn;
-        }
-
-        public static float GetInlineCurveHeight(TrackAsset asset)
-        {
-            if (asset == null)
-                return TrackViewModelData.DefaultinlineAnimationCurveHeight;
-
-            return GetTrackViewModelData(asset).inlineAnimationCurveHeight;
-        }
-
-        public static void SetInlineCurveHeight(TrackAsset asset, float height)
-        {
-            if (asset != null)
-                GetTrackViewModelData(asset).inlineAnimationCurveHeight = height;
-        }
-
-        public static int GetTrackHeightExtension(TrackAsset asset)
-        {
-            if (asset == null)
-                return 0;
-
-            return GetTrackViewModelData(asset).trackHeightExtension;
-        }
-
-        public static void SetTrackHeightExtension(TrackAsset asset, int height)
-        {
-            if (asset != null)
-                GetTrackViewModelData(asset).trackHeightExtension = height;
         }
     }
 }

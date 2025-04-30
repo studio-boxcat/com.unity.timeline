@@ -2,26 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.Timeline;
-using UnityObject = UnityEngine.Object;
 
 namespace UnityEditor.Timeline
 {
     [Serializable]
     class TrackViewModelData : ISerializationCallbackReceiver
     {
-        public static readonly float DefaultinlineAnimationCurveHeight = 100.0f;
-
         public bool collapsed = true;
         public bool showMarkers = true;
-
-        public bool showInlineCurves = false;
-        public float inlineAnimationCurveHeight = DefaultinlineAnimationCurveHeight;
-        public int lastInlineCurveDataID = -1;
-        public TreeViewState inlineCurvesState = null;
-        public Rect inlineCurvesShownAreaInsideMargins = new Rect(1, 1, 1, 1);
-        public int trackHeightExtension;
 
         public Dictionary<int, long> markerTimeStamps = new Dictionary<int, long>();
         [SerializeField] List<int> m_MarkerTimeStampsKeys;

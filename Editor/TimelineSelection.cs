@@ -7,14 +7,11 @@ namespace UnityEditor.Timeline
 {
     static class SelectionManager
     {
-        static IClipCurveEditorOwner currentInlineEditorCurve;
-
         public static void AddObject(Object obj)
         {
             if (obj == null)
                 return;
 
-            currentInlineEditorCurve = null;
             if (Selection.Contains(obj))
                 return;
 
@@ -27,7 +24,6 @@ namespace UnityEditor.Timeline
             if (obj == null)
                 return;
 
-            currentInlineEditorCurve = null;
             if (!Selection.Contains(obj))
             {
                 WindowState state = null;
@@ -53,7 +49,6 @@ namespace UnityEditor.Timeline
             {
                 if (!Selection.Contains(markerAsObject))
                 {
-                    currentInlineEditorCurve = null;
                     WindowState state = null;
                     if (TimelineWindow.instance != null)
                         state = TimelineWindow.instance.state;
@@ -118,21 +113,6 @@ namespace UnityEditor.Timeline
             }
         }
 
-        public static void SelectInlineCurveEditor(IClipCurveEditorOwner selection)
-        {
-            currentInlineEditorCurve = selection;
-        }
-
-        public static IClipCurveEditorOwner GetCurrentInlineEditorCurve()
-        {
-            return currentInlineEditorCurve;
-        }
-
-        public static bool IsCurveEditorFocused(IClipCurveEditorOwner selection)
-        {
-            return selection == currentInlineEditorCurve;
-        }
-
         public static bool Contains(TrackAsset item)
         {
             if (item == null)
@@ -173,7 +153,6 @@ namespace UnityEditor.Timeline
 
         public static void Clear()
         {
-            currentInlineEditorCurve = null;
             Selection.activeObject = null;
         }
 

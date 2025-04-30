@@ -32,12 +32,6 @@ namespace UnityEditor.Timeline
                     continue;
 
                 item.parentTrack = parentTrack;
-
-                var clipGUI = item.gui as TimelineClipGUI;
-                if (clipGUI != null)
-                {
-                    clipGUI.clipCurveEditor = null;
-                }
             }
         }
 

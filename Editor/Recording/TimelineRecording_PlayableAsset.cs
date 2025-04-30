@@ -106,7 +106,6 @@ namespace UnityEditor.Timeline
             {
                 EditorCurveBinding binding = curvesOwner.GetCurveBinding(mod.previousValue.propertyPath);
                 AnimationMode.AddPropertyModification(binding, mod.previousValue, true);
-                curvesOwner.targetTrack.SetShowInlineCurves(true);
                 if (state.GetWindow() != null && state.GetWindow().treeView != null)
                     state.GetWindow().treeView.CalculateRowRects();
             }

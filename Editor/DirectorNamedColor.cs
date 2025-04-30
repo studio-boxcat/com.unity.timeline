@@ -102,22 +102,10 @@ namespace UnityEngine.Timeline
         public Color colorRecordingClipOutline = new Color(1, 0, 0, 0.9f);
 
         [SerializeField]
-        public Color colorAnimEditorBinding = new Color(54.0f / 255.0f, 54.0f / 255.0f, 54.0f / 255.0f);
-
-        [SerializeField]
         public Color colorTimelineBackground = new Color(0.2f, 0.2f, 0.2f, 1.0f);
 
         [SerializeField]
         public Color colorLockTextBG = Color.red;
-
-        [SerializeField]
-        public Color colorInlineCurveVerticalLines = new Color(1.0f, 1.0f, 1.0f, 0.2f);
-
-        [SerializeField]
-        public Color colorInlineCurveOutOfRangeOverlay = new Color(0.0f, 0.0f, 0.0f, 0.5f);
-
-        [SerializeField]
-        public Color colorInlineCurvesBackground;
 
         [SerializeField]
         public Color markerDrawerBackgroundColor = new Color(0.4f, 0.4f, 0.4f, 1.0f);
@@ -186,8 +174,6 @@ namespace UnityEngine.Timeline
             colorTrackBackground = new Color(0.2f, 0.2f, 0.2f, 1.0f);
             colorTrackBackgroundSelected = new Color(1f, 1f, 1f, 0.33f);
 
-            colorInlineCurvesBackground = new Color(0.25f, 0.25f, 0.25f, 0.6f);
-
             colorTrackFont = DirectorStyles.Instance.trackHeaderFont.normal.textColor;
 
             colorClipUnion = new Color(0.72f, 0.72f, 0.72f, 0.8f);
@@ -212,8 +198,6 @@ namespace UnityEngine.Timeline
             colorDefaultTrackDrawer = new Color(218.0f / 255.0f, 220.0f / 255.0f, 222.0f / 255.0f);
 
             colorRecordingClipOutline = new Color(1, 0, 0, 0.9f);
-            colorInlineCurveVerticalLines = new Color(1.0f, 1.0f, 1.0f, 0.2f);
-            colorInlineCurveOutOfRangeOverlay = new Color(0.0f, 0.0f, 0.0f, 0.5f);
         }
 
         public void ToText(string path)

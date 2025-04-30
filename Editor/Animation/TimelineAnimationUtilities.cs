@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEditor;
-using UnityEngineInternal;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using Object = UnityEngine.Object;
@@ -17,14 +15,6 @@ namespace UnityEditor.Timeline
             None = -1,
             Translation = 0,
             Rotation = 1
-        }
-
-        public static bool ValidateOffsetAvailabitity(PlayableDirector director, Animator animator)
-        {
-            if (director == null || animator == null)
-                return false;
-
-            return true;
         }
 
         public static TimelineClip GetPreviousClip(TimelineClip clip)
@@ -378,53 +368,6 @@ namespace UnityEditor.Timeline
                 if (apa != null && apa.clip != null)
                     clips.Add(apa.clip);
             }
-        }
-
-        public static int GetAnimationWindowCurrentFrame()
-        {
-            var animationWindow = EditorWindow.GetWindow<AnimationWindow>();
-            if (animationWindow)
-                return animationWindow.state.currentFrame;
-            return -1;
-        }
-
-        public static void SetAnimationWindowCurrentFrame(int frame)
-        {
-            var animationWindow = EditorWindow.GetWindow<AnimationWindow>();
-            if (animationWindow)
-                animationWindow.state.currentFrame = frame;
-        }
-
-        public static void ConstrainCurveToBooleanValues(AnimationCurve curve)
-        {
-            // Clamp the values first
-            var keys = curve.keys;
-            for (var i = 0; i < keys.Length; i++)
-            {
-                var key = keys[i];
-                key.value = key.value < 0.5f ? 0.0f : 1.0f;
-                keys[i] = key;
-            }
-            curve.keys = keys;
-
-            // Update the tangents once all the values are clamped
-            for (var i = 0; i < curve.length; i++)
-            {
-                AnimationUtility.SetKeyLeftTangentMode(curve, i, AnimationUtility.TangentMode.Constant);
-                AnimationUtility.SetKeyRightTangentMode(curve, i, AnimationUtility.TangentMode.Constant);
-            }
-        }
-
-        public static void ConstrainCurveToRange(AnimationCurve curve, float minValue, float maxValue)
-        {
-            var keys = curve.keys;
-            for (var i = 0; i < keys.Length; i++)
-            {
-                var key = keys[i];
-                key.value = Mathf.Clamp(key.value, minValue, maxValue);
-                keys[i] = key;
-            }
-            curve.keys = keys;
         }
 
         public static bool IsAnimationClip(TimelineClip clip)

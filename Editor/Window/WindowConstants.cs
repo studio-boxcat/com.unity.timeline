@@ -35,8 +35,6 @@ namespace UnityEditor.Timeline
         public const float trackBindingPadding = 5.0f;
 
         public const float trackInsertionMarkerHeight = 1f;
-        public const float trackResizeHandleHeight = 7f;
-        public const float inlineCurveContentPadding = 2.0f;
 
         public const float playControlsWidth = 300;
 

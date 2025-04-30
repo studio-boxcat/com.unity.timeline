@@ -214,16 +214,6 @@
     background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/Shared/TimelineConnector.png");
 }
 
-.trackCurvesButton {
-    -unity-text-align: middle-center;
-    -unity-clipping: clip;
-    height: 16;
-    width: 16;
-    font-size: 72;
-    -unity-rich-text: false;
-    -unity-stretch-width: false;
-}
-
 .Icon-Endmarker {
     /* GUIStyle.alignment */
     -unity-text-align: middle-center;
