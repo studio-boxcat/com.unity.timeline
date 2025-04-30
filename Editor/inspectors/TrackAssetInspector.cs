@@ -42,8 +42,6 @@ namespace UnityEditor.Timeline
         SerializedProperty m_Name;
         bool m_IsBuiltInType;
 
-        Texture m_HeaderIcon;
-
 
         protected TimelineWindow timelineWindow
         {
@@ -107,17 +105,6 @@ namespace UnityEditor.Timeline
             }
         }
 
-        internal override void OnHeaderIconGUI(Rect iconRect)
-        {
-            if (TimelineWindow.instance == null)
-                return;
-            using (new EditorGUI.DisabledScope(IsTrackLocked()))
-            {
-                if (m_HeaderIcon != null)
-                    GUI.Label(iconRect, GUIContent.Temp(m_HeaderIcon));
-            }
-        }
-
         internal override Rect DrawHeaderHelpAndSettingsGUI(Rect r)
         {
             using (new EditorGUI.DisabledScope(IsTrackLocked()))
@@ -135,24 +122,6 @@ namespace UnityEditor.Timeline
             m_IsBuiltInType = target != null && target.GetType().Assembly == typeof(TrackAsset).Assembly;
             m_Name = serializedObject.FindProperty("m_Name");
             m_TrackCurvesWrapper = new TrackCurvesWrapper(target as TrackAsset);
-            m_HeaderIcon = TrackResourceCache.s_DefaultIcon.image;
-
-            // only worry about the first track. if types are different, a different inspector is used.
-            var track = target as TrackAsset;
-            if (track != null)
-            {
-                var drawer = CustomTimelineEditorCache.GetTrackEditor(track);
-                UnityEngine.Object binding = null;
-                var director = m_Context as PlayableDirector;
-                if (director != null)
-                    binding = director.GetGenericBinding(track);
-
-                var options = drawer.GetTrackOptions(track, binding);
-                if (options.icon != null)
-                    m_HeaderIcon = options.icon;
-                else
-                    m_HeaderIcon = TrackResourceCache.GetTrackIcon(track).image;
-            }
         }
 
         void DrawInspector()

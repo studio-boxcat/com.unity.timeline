@@ -18,7 +18,6 @@ namespace UnityEditor.Timeline
             public bool m_IsSubTrack;
             public PlayableBinding m_Binding;
             public Object m_TrackBinding;
-            public Texture m_TrackIcon;
         }
 
         static class Styles
@@ -28,7 +27,6 @@ namespace UnityEditor.Timeline
             public static readonly GUIContent kIgnorePreviewRecordButtonTooltip = DirectorStyles.TrTextContent(string.Empty, "Recording is disabled: scene preview is ignored for this TimelineAsset");
             public static readonly GUIContent kDisabledRecordButtonTooltip = DirectorStyles.TrTextContent(string.Empty,
                 "Recording is not permitted when Track Offsets are set to Auto. Track Offset settings can be changed in the track menu of the base track.");
-            public static Texture2D kProblemIcon = DirectorStyles.GetBackgroundImage(DirectorStyles.Instance.warning);
         }
 
         static GUIContent s_ArmForRecordContentOn;
@@ -37,7 +35,6 @@ namespace UnityEditor.Timeline
 
         readonly InfiniteTrackDrawer m_InfiniteTrackDrawer;
         readonly TrackEditor m_TrackEditor;
-        readonly GUIContent m_DefaultTrackIcon;
 
         TrackItemsDrawer m_ItemsDrawer;
         TrackDrawData m_TrackDrawData;
@@ -114,7 +111,6 @@ namespace UnityEditor.Timeline
                 m_TrackDrawData.m_Binding = bindings[0];
             m_TrackDrawData.m_IsSubTrack = IsSubTrack();
             m_TrackDrawData.m_AllowsRecording = DoesTrackAllowsRecording(sequenceActor);
-            m_DefaultTrackIcon = TrackResourceCache.GetTrackIcon(track);
 
             m_TrackEditor = CustomTimelineEditorCache.GetTrackEditor(sequenceActor);
             m_TrackDrawOptions = m_TrackEditor.GetTrackOptions_Safe(track, null);
@@ -175,9 +171,6 @@ namespace UnityEditor.Timeline
                 m_TrackDrawOptions = m_TrackEditor.GetTrackOptions_Safe(track, m_TrackDrawData.m_TrackBinding);
 
                 m_TrackDrawData.m_AllowsRecording = DoesTrackAllowsRecording(track);
-                m_TrackDrawData.m_TrackIcon = m_TrackDrawOptions.icon;
-                if (m_TrackDrawData.m_TrackIcon == null)
-                    m_TrackDrawData.m_TrackIcon = m_DefaultTrackIcon.image;
             }
         }
 
@@ -225,14 +218,6 @@ namespace UnityEditor.Timeline
             DrawTrackState(contentRect, contentRect, track);
         }
 
-        void DrawErrorIcon(Rect position, WindowState state)
-        {
-            Rect bindingLabel = position;
-            bindingLabel.x = position.xMax + 3;
-            bindingLabel.width = state.bindingAreaWidth;
-            EditorGUI.LabelField(position, m_ProblemIcon);
-        }
-
         void DrawBackground(Rect trackRect, TrackAsset trackAsset, Vector2 visibleTime, WindowState state)
         {
             bool canDrawRecordBackground = IsRecording(state);
@@ -271,11 +256,6 @@ namespace UnityEditor.Timeline
             return height;
         }
 
-        static bool CanDrawIcon(GUIContent icon)
-        {
-            return icon != null && icon != GUIContent.none && icon.image != null;
-        }
-
         bool showSceneReference
         {
             get
@@ -299,10 +279,8 @@ namespace UnityEditor.Timeline
                 rect.x += m_Styles.trackSwatchStyle.fixedWidth;
 
                 const float buttonSize = WindowConstants.trackHeaderButtonSize;
-                const float padding = WindowConstants.trackHeaderButtonPadding;
+                const float padding = WindowConstants.trackHeaderPadding;
                 var buttonRect = new Rect(trackHeaderRect.xMax - buttonSize - padding, rect.y + (rect.height - buttonSize) / 2f, buttonSize, buttonSize);
-
-                rect.x += DrawTrackIconKind(rect, state);
 
                 if (track is GroupTrack)
                     return;
@@ -324,11 +302,8 @@ namespace UnityEditor.Timeline
             if (numberOfButtons == 0)
                 return rect;
 
-            var padding = DrawButtonSuite(numberOfButtons, ref rect);
-
             rect.x -= DrawRecordButton(rect, state);
             rect.x -= DrawCustomTrackButton(rect, state);
-            rect.x -= padding;
             return rect;
         }
 
@@ -358,34 +333,6 @@ namespace UnityEditor.Timeline
                 rect.width = m_Styles.trackSwatchStyle.fixedWidth;
                 GUI.Label(rect, GUIContent.none, m_Styles.trackSwatchStyle);
             }
-        }
-
-        float DrawTrackIconKind(Rect rect, WindowState state)
-        {
-            // no icons on subtracks
-            if (track != null && track.isSubTrack)
-                return 0.0f;
-
-            rect.yMin += (rect.height - 16f) / 2f;
-            rect.width = 16.0f;
-            rect.height = 16.0f;
-
-            if (!string.IsNullOrEmpty(m_TrackDrawOptions.errorText))
-            {
-                m_ProblemIcon.image = Styles.kProblemIcon;
-                m_ProblemIcon.tooltip = m_TrackDrawOptions.errorText;
-
-                if (CanDrawIcon(m_ProblemIcon))
-                    DrawErrorIcon(rect, state);
-            }
-            else
-            {
-                var content = GUIContent.Temp(m_TrackDrawData.m_TrackIcon, m_DefaultTrackIcon.tooltip);
-                if (CanDrawIcon(content))
-                    GUI.Box(rect, content, GUIStyle.none);
-            }
-
-            return rect.width;
         }
 
         void DrawTrackBinding(Rect rect, Rect headerRect)
@@ -421,7 +368,7 @@ namespace UnityEditor.Timeline
         float DrawRecordButton(Rect rect, WindowState state)
         {
             var style = DirectorStyles.Instance.trackRecordButton;
-            const float buttonWidth = WindowConstants.trackHeaderButtonSize + WindowConstants.trackHeaderButtonPadding;
+            const float buttonWidth = WindowConstants.trackHeaderButtonSize;
 
             if (m_TrackDrawData.m_AllowsRecording)
             {
@@ -480,7 +427,7 @@ namespace UnityEditor.Timeline
                 return 0.0f;
 
             drawer.DrawTrackHeaderButton(rect, state);
-            return WindowConstants.trackHeaderButtonSize + WindowConstants.trackHeaderButtonPadding;
+            return WindowConstants.trackHeaderButtonSize;
         }
 
         static void ObjectBindingField(Rect position, Object obj, PlayableBinding binding, int controlId)

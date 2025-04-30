@@ -30,14 +30,6 @@ namespace UnityEditor.Timeline
         public float height { get; set; }
 
         /// <summary>
-        /// The icon displayed on the track header.
-        /// </summary>
-        /// <remarks>
-        /// If this value is null, then the default icon for the track is used.
-        /// </remarks>
-        public Texture2D icon { get; set; }
-
-        /// <summary>
         /// Indicates whether this instance and a specified object are equal.
         /// </summary>
         /// <param name="obj">The object to compare with the current instance.</param>
@@ -59,8 +51,7 @@ namespace UnityEditor.Timeline
         {
             return errorText == other.errorText &&
                 trackColor == other.trackColor &&
-                height == other.height &&
-                icon == other.icon;
+                height == other.height;
         }
 
         /// <summary>
@@ -72,8 +63,7 @@ namespace UnityEditor.Timeline
             return HashUtility.CombineHash(
                 errorText != null ? errorText.GetHashCode() : 0,
                 trackColor.GetHashCode(),
-                height.GetHashCode(),
-                icon != null ? icon.GetHashCode() : 0
+                height.GetHashCode()
             );
         }
 
@@ -173,7 +163,6 @@ namespace UnityEditor.Timeline
                 errorText = GetErrorText(track, binding, TrackBindingErrors.All),
                 height = DefaultTrackHeight,
                 trackColor = GetTrackColor(track),
-                icon = null
             };
         }
 

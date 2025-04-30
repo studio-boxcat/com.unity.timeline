@@ -88,32 +88,6 @@
     color: rgb(137, 196, 255);
 }
 
-.Icon-Activation {
-    /* GUIStyle.alignment */
-    -unity-text-align: middle-left;
-
-    /* GUIStyle.fixedHeight */
-    height: 15;
-
-    /* GUIStyle.fontSize */
-    font-size: --unity-font-size;
-
-    /* GUIStyle.imagePosition */
-    -unity-image-position: image-only;
-
-    /* GUIStyle.name */
-    -unity-name: "Icon.Activation";
-
-    /* GUIStyle.richText */
-    -unity-rich-text: false;
-
-    /* GUIStyle.stretchWidth */
-    -unity-stretch-width: false;
-
-    /* GUIState.textColor */
-    color: rgba(0, 0, 0, 0.75);
-}
-
 .trackRecordButton {
     height: 16;
     width: 16;
@@ -815,32 +789,6 @@
     color: rgba(0, 0, 0, 0.96);
 }
 
-.Icon-Warning {
-    /* GUIStyle.alignment */
-    -unity-text-align: middle-center;
-
-    /* GUIStyle.clipping */
-    -unity-clipping: clip;
-
-    /* GUIStyle.fontSize */
-    font-size: 72;
-
-    /* GUIStyle.imagePosition */
-    -unity-image-position: image-only;
-
-    /* GUIStyle.name */
-    -unity-name: "Icon.Warning";
-
-    /* GUIStyle.richText */
-    -unity-rich-text: false;
-
-    /* GUIStyle.stretchWidth */
-    -unity-stretch-width: false;
-
-    /* GUIState.background */
-    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/Shared/TimelineWarning.png");
-}
-
 .sequenceClip {
     /* GUIStyle.alignment */
     -unity-text-align: middle-left;
@@ -986,16 +934,6 @@
     padding-bottom: 0px;
     -unity-text-align: middle-center;
     font-size: --unity-font-size-small;
-}
-
-.trackButtonSuite {
-    height: 22px;
-    border-radius: 3px;
-    margin-left: 1px;
-    margin-right: 1px;
-    margin-top: -3px;
-    padding-left: 3px;
-    padding-right: 4px;
 }
 
 .previewButtonDisabled {

@@ -11,7 +11,6 @@ namespace UnityEditor.Timeline
     {
         protected DirectorStyles m_Styles;
         protected Rect m_TreeViewRect = new Rect(0, 0, 0, 0);
-        protected GUIContent m_ProblemIcon = new GUIContent();
 
         bool m_MustRecomputeUnions = true;
         int m_GroupDepth;
@@ -89,9 +88,8 @@ namespace UnityEditor.Timeline
         void DrawTrackButtons(Rect headerRect, WindowState state)
         {
             const float buttonSize = WindowConstants.trackHeaderButtonSize;
-            const float padding = WindowConstants.trackHeaderButtonPadding;
 
-            var buttonRect = new Rect(headerRect.xMax - buttonSize - padding, headerRect.y + ((headerRect.height - buttonSize) / 2f), buttonSize, buttonSize);
+            var buttonRect = new Rect(headerRect.xMax - buttonSize, headerRect.y + ((headerRect.height - buttonSize) / 2f), buttonSize, buttonSize);
 
             if (GUI.Button(buttonRect, EditorGUIUtility.IconContent("CreateAddNew"), m_Styles.trackGroupAddButton))
             {
@@ -103,7 +101,6 @@ namespace UnityEditor.Timeline
                 }
                 SequencerContextMenu.ShowNewTracksContextMenu(SelectionManager.SelectedTracks().ToArray(), TimelineWindow.state, buttonRect);
             }
-            buttonRect.x -= buttonSize;
         }
 
         public void SetExpanded(bool expanded)
@@ -187,7 +184,7 @@ namespace UnityEditor.Timeline
 
             using (new GUIGroupScope(headerRect))
             {
-                var groupRect = new Rect(0, 0, headerRect.width, headerRect.height);
+                var groupRect = new Rect(0, 0, headerRect.width - WindowConstants.trackHeaderPadding, headerRect.height);
                 DrawName(groupRect, isSelected);
                 DrawTrackButtons(groupRect, state);
             }
@@ -217,7 +214,7 @@ namespace UnityEditor.Timeline
         void DrawName(Rect rect, bool isSelected)
         {
             var labelRect = rect;
-            labelRect.xMin += 20;
+            labelRect.xMin += 6;
             var actorName = track != null ? track.name : "missing";
             labelRect.width = m_Styles.groupFont.CalcSize(new GUIContent(actorName)).x;
             labelRect.width = Math.Max(labelRect.width, 50.0f);
@@ -298,19 +295,6 @@ namespace UnityEditor.Timeline
             if (groupGui.children == null)
                 return true;
             return groupGui.children.OfType<TimelineGroupGUI>().All(AllChildrenMuted);
-        }
-
-        protected static float DrawButtonSuite(int numberOfButtons, ref Rect buttonRect)
-        {
-            var style = DirectorStyles.Instance.trackButtonSuite;
-            var buttonWidth = WindowConstants.trackHeaderButtonSize * numberOfButtons + WindowConstants.trackHeaderButtonPadding * Math.Max(0, numberOfButtons - 1);
-            var suiteWidth = buttonWidth + style.padding.right + style.padding.left;
-
-            var rect = new Rect(buttonRect.xMax - style.margin.right - suiteWidth, buttonRect.y + style.margin.top, suiteWidth, buttonRect.height);
-            if (Event.current.type == EventType.Repaint)
-                style.Draw(rect, false, false, false, false);
-            buttonRect.x -= style.margin.right + style.padding.right;
-            return style.margin.left + style.padding.left;
         }
     }
 }

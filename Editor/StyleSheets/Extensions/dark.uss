@@ -3,14 +3,6 @@
     color: rgb(255, 255, 255);
 }
 
-.Icon-Activation {
-    /* GUIStyle.fixedWidth */
-    width: 12;
-
-    /* GUIState.background */
-    background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/DarkSkin/TimelineActivation.png");
-}
-
 .trackRecordButton {
     background-image: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/Icons/d_TrackRecordButtonDisabled.png");
     -unity-scaled-backgrounds: resource("Packages/com.unity.timeline/Editor/StyleSheets/Images/Icons/d_TrackRecordButtonDisabled@2x.png");
@@ -193,8 +185,4 @@
 
 .sequenceSwitcher{
     background-color: rgb(51, 51, 51);
-}
-
-.trackButtonSuite {
-    background-color: rgba(40, 40, 40, 0.75);
 }
