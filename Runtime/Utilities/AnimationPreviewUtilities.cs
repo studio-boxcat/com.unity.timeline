@@ -79,10 +79,6 @@ namespace UnityEngine.Timeline
                 AddBindings(s_BindingCache.GetCurveBindings(clip));
             }
 
-            // if we have a transform binding, bind the entire skeleton
-            if (NeedsSkeletonBindings(s_CurveSet.Keys))
-                AddBindings(s_BindingCache.GetAnimatorBindings(animatorRoot));
-
             var bindings = new EditorCurveBinding[s_CurveSet.Keys.Count];
             s_CurveSet.Keys.CopyTo(bindings, 0);
             return bindings;
@@ -223,17 +219,6 @@ namespace UnityEngine.Timeline
             return false;
         }
 
-        private static bool NeedsSkeletonBindings(IEnumerable<EditorCurveBinding> bindings)
-        {
-            foreach (var b in bindings)
-            {
-                if (IsSkeletalBinding(b))
-                    return true;
-            }
-
-            return false;
-        }
-
         private static void AddBindings(IEnumerable<EditorCurveBinding> bindings)
         {
             foreach (var b in bindings)
@@ -269,12 +254,6 @@ namespace UnityEngine.Timeline
         private static bool IsAvatarBinding(EditorCurveBinding binding)
         {
             return string.IsNullOrEmpty(binding.path) && typeof(Animator) == binding.type;
-        }
-
-        private static bool IsSkeletalBinding(EditorCurveBinding binding)
-        {
-            // skin mesh incorporates blend shapes
-            return typeof(Transform).IsAssignableFrom(binding.type) || typeof(SkinnedMeshRenderer).IsAssignableFrom(binding.type);
         }
 
         private static AnimationCurve SetZeroKey(AnimationCurve curve, Keyframe[] keys, float val)
