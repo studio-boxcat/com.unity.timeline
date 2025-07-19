@@ -43,12 +43,12 @@ namespace UnityEngine.Timeline
         /// <summary>
         /// Indicates whether playableDirectors are controlled.
         /// </summary>
-        [SerializeField] public bool updateDirector = true;
+        [SerializeField] public bool updateDirector;
 
         /// <summary>
         /// Indicates whether Monobehaviours implementing ITimeControl will be controlled.
         /// </summary>
-        [SerializeField] public bool updateITimeControl = true;
+        [SerializeField] public bool updateITimeControl;
 
         /// <summary>
         /// Indicates whether to search the entire hierarchy for controllable components.
