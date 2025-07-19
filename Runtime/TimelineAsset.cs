@@ -109,7 +109,7 @@ namespace UnityEngine.Timeline
             }
         }
 
-        [HideInInspector, SerializeField] List<ScriptableObject> m_Tracks;
+        [HideInInspector, SerializeField] List<TrackAsset> m_Tracks;
         [HideInInspector, SerializeField] double m_FixedDuration; // only applied if duration mode is Fixed
         [HideInInspector, NonSerialized] TrackAsset[] m_CacheOutputTracks;
         [HideInInspector, NonSerialized] List<TrackAsset> m_CacheRootTracks;
@@ -368,7 +368,7 @@ namespace UnityEngine.Timeline
         }
 
         // access to the track list as scriptable object
-        internal List<ScriptableObject> trackObjects
+        internal List<TrackAsset> trackObjects
         {
             get { return m_Tracks; }
         }
@@ -439,7 +439,7 @@ namespace UnityEngine.Timeline
         void __internalAwake()
         {
             if (m_Tracks == null)
-                m_Tracks = new List<ScriptableObject>();
+                m_Tracks = new List<TrackAsset>();
 
 #if UNITY_EDITOR
             // case 1280331 -- embedding the timeline asset inside a prefab will create a temporary non-persistent version of an asset

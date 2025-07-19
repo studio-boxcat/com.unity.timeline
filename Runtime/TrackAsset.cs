@@ -62,7 +62,7 @@ namespace UnityEngine.Timeline
         [SerializeField, HideInInspector] string m_CustomPlayableFullTypename = string.Empty;
         [SerializeField, HideInInspector] AnimationClip m_Curves;
         [SerializeField, HideInInspector] PlayableAsset m_Parent;
-        [SerializeField, HideInInspector] List<ScriptableObject> m_Children;
+        [SerializeField, HideInInspector] List<TrackAsset> m_Children;
 
         [NonSerialized] int m_ItemsHash;
         [NonSerialized] TimelineClip[] m_ClipsCache;
@@ -339,7 +339,7 @@ namespace UnityEngine.Timeline
         }
 
         // for UI where we need to detect 'null' objects
-        internal List<ScriptableObject> subTracksObjects
+        internal List<TrackAsset> subTracksObjects
         {
             get { return m_Children; }
         }
@@ -411,7 +411,7 @@ namespace UnityEngine.Timeline
 
             m_ChildTrackCache = null;
             if (m_Children == null)
-                m_Children = new List<ScriptableObject>();
+                m_Children = new List<TrackAsset>();
 #if UNITY_EDITOR
             // validate the array. DON'T remove Unity null objects, just actual null objects
             for (int i = m_Children.Count - 1; i >= 0; i--)
@@ -923,7 +923,7 @@ namespace UnityEngine.Timeline
 
         internal void ClearSubTracksInternal()
         {
-            m_Children = new List<ScriptableObject>();
+            m_Children = new List<TrackAsset>();
             Invalidate();
         }
 

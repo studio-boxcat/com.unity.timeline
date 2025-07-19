@@ -17,7 +17,7 @@ namespace UnityEditor.Timeline
 {
     static class TimelineUtility
     {
-        public static void ReorderTracks(List<ScriptableObject> allTracks, List<TrackAsset> tracks, ScriptableObject insertAfterAsset, bool up)
+        public static void ReorderTracks(List<TrackAsset> allTracks, List<TrackAsset> tracks, TrackAsset insertAfterAsset, bool up)
         {
             foreach (var i in tracks)
                 allTracks.Remove(i);
@@ -26,7 +26,7 @@ namespace UnityEditor.Timeline
 
             index = up ? Math.Max(index, 0) : index + 1;
 
-            allTracks.InsertRange(index, tracks.OfType<ScriptableObject>());
+            allTracks.InsertRange(index, tracks);
         }
 
         // Gets the track that holds the game object reference for this track.

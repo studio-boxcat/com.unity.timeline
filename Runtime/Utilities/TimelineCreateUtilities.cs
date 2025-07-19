@@ -9,7 +9,7 @@ namespace UnityEngine.Timeline
     static class TimelineCreateUtilities
     {
         // based off of ObjectNames.GetUniqueName, but can exist in runtime
-        public static string GenerateUniqueActorName(List<ScriptableObject> tracks, string name)
+        public static string GenerateUniqueActorName(List<TrackAsset> tracks, string name)
         {
             if (!tracks.Exists(x => ((object)x) != null && x.name == name))
                 return name;
