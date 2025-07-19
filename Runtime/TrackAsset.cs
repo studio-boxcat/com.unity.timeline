@@ -174,8 +174,8 @@ namespace UnityEngine.Timeline
         {
             get
             {
-                var node = this;
-                while (node != null)
+                var node = this; // mostly direct parent is TimelineAsset.
+                do
                 {
                     if (node.parent == null)
                         return null;
@@ -185,7 +185,7 @@ namespace UnityEngine.Timeline
                         return seq;
 
                     node = node.parent as TrackAsset;
-                }
+                } while (node != null);
                 return null;
             }
         }
