@@ -184,7 +184,7 @@ namespace UnityEngine.Timeline
         {
             get
             {
-                foreach (var outputTracks in GetOutputTracks())
+                foreach (var outputTracks in (TrackAsset[]) GetOutputTracks())
                     foreach (var output in outputTracks.outputs)
                         yield return output;
             }
@@ -324,8 +324,9 @@ namespace UnityEngine.Timeline
         {
             if (m_CacheOutputTracks == null)
             {
-                var outputTracks = new List<TrackAsset>();
-                foreach (var flattenedTrack in flattenedTracks)
+                var candidates = flattenedTracks;
+                var outputTracks = new List<TrackAsset>(candidates.Length);
+                foreach (var flattenedTrack in candidates)
                 {
                     if (flattenedTrack != null && flattenedTrack.GetType() != typeof(GroupTrack) && !flattenedTrack.isSubTrack)
                         outputTracks.Add(flattenedTrack);
@@ -346,7 +347,7 @@ namespace UnityEngine.Timeline
                     list.AddRange(m_CacheRootTracks);
                     for (int i = 0; i < m_CacheRootTracks.Count; i++)
                     {
-                        AddSubTracksRecursive(m_CacheRootTracks[i], ref list);
+                        AddSubTracksRecursive(m_CacheRootTracks[i], list);
                     }
 
                     m_CacheFlattenedTracks = list.ToArray();
@@ -545,7 +546,7 @@ namespace UnityEngine.Timeline
             return discreteDuration;
         }
 
-        static void AddSubTracksRecursive(TrackAsset track, ref List<TrackAsset> allTracks)
+        static void AddSubTracksRecursive(TrackAsset track, List<TrackAsset> allTracks)
         {
             if (track == null)
                 return;
@@ -553,7 +554,7 @@ namespace UnityEngine.Timeline
             allTracks.AddRange(track.GetChildTracks());
             foreach (TrackAsset subTrack in track.GetChildTracks())
             {
-                AddSubTracksRecursive(subTrack, ref allTracks);
+                AddSubTracksRecursive(subTrack, allTracks);
             }
         }
     }

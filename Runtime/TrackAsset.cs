@@ -73,7 +73,7 @@ namespace UnityEngine.Timeline
         bool? m_SupportsNotifications;
 
         static TrackAsset[] s_EmptyCache = new TrackAsset[0];
-        IEnumerable<TrackAsset> m_ChildTrackCache;
+        IReadOnlyList<TrackAsset> m_ChildTrackCache;
 
         static Dictionary<Type, TrackBindingTypeAttribute> s_TrackBindingTypeAttributeCache = new Dictionary<Type, TrackBindingTypeAttribute>();
 
@@ -297,7 +297,7 @@ namespace UnityEngine.Timeline
         /// <remarks>
         /// In the case of GroupTracks, this returns all tracks contained in the group. This will return the all subtracks or override tracks, if supported by the track.
         /// </remarks>
-        public IEnumerable<TrackAsset> GetChildTracks()
+        public IReadOnlyList<TrackAsset> GetChildTracks()
         {
             UpdateChildTrackCache();
             return m_ChildTrackCache;
@@ -1264,7 +1264,7 @@ namespace UnityEngine.Timeline
                     var childTracks = new List<TrackAsset>(m_Children.Count);
                     for (int i = 0; i < m_Children.Count; i++)
                     {
-                        var subTrack = m_Children[i] as TrackAsset;
+                        var subTrack = m_Children[i];
                         if (subTrack != null)
                             childTracks.Add(subTrack);
                     }
