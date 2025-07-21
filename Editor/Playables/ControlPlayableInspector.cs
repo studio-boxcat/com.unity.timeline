@@ -150,7 +150,7 @@ namespace UnityEditor.Timeline
                 }
 
                 EditorGUILayout.PropertyField(m_UpdateParticle, Styles.updateParticleSystemsContent);
-                if (m_UpdateParticle.boolValue)
+                if (m_UpdateParticle.enumValueIndex == (int)ControlPlayAssetParticleSimulateMode.Simulate)
                 {
                     EditorGUI.indentLevel++;
                     EditorGUILayout.PropertyField(m_RandomSeed, Styles.randomSeedContent);

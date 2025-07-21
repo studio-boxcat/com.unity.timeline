@@ -14,7 +14,7 @@ namespace UnityEditor.Timeline
         {
             var asset = (ControlPlayableAsset)clip.asset;
             var options = base.GetClipOptions(clip);
-            if (asset.updateParticle && TimelineEditor.inspectedDirector != null && asset.controllingParticles)
+            if (asset.updateParticle is not ControlPlayAssetParticleSimulateMode.None && TimelineEditor.inspectedDirector != null && asset.controllingParticles)
                 options.icons = s_ParticleSystemIcon;
             return options;
         }

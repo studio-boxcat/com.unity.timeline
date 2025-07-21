@@ -1,10 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.Playables;
 
 namespace UnityEngine.Timeline
 {
+    public enum ControlPlayAssetParticleSimulateMode
+    {
+        None = 0, // 모든 particle 관련된 처리를 하지 않음.
+        Simulate = 1, // timeline 에서 런타임, editor 모두에서 시뮬레이션을 담당.
+#if UNITY_EDITOR
+        PreviewOnly, // timeline 에서 런타임에서 시뮬레이션을 담당하지 않지만, editor 에서만 시뮬레이션을 담당.
+#endif
+    }
+
     /// <summary>
     /// Playable Asset that generates playables for controlling time-related elements on a GameObject.
     /// </summary>
@@ -30,7 +38,7 @@ namespace UnityEngine.Timeline
         /// <summary>
         /// Indicates whether Particle Systems will be controlled.
         /// </summary>
-        [SerializeField] public bool updateParticle = true;
+        [SerializeField] public ControlPlayAssetParticleSimulateMode updateParticle = ControlPlayAssetParticleSimulateMode.None;
 
         /// <summary>
         /// Random seed to supply particle systems that are set to use autoRandomSeed
@@ -153,7 +161,16 @@ namespace UnityEngine.Timeline
                     GetComponent(sourceObject, directors);
                 }
                 var particleSystems = k_EmptyParticlesList;
-                if (updateParticle)
+                var shouldSimulateParticle = updateParticle switch
+                {
+                    ControlPlayAssetParticleSimulateMode.None => false,
+                    ControlPlayAssetParticleSimulateMode.Simulate => true,
+#if UNITY_EDITOR
+                    ControlPlayAssetParticleSimulateMode.PreviewOnly => Editing.Yes(sourceObject),
+#endif
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+                if (shouldSimulateParticle)
                 {
                     ListPools.ParticleSystem.Rent(out particleSystems);
                     GetComponent(sourceObject, particleSystems);
@@ -181,8 +198,15 @@ namespace UnityEngine.Timeline
                 if (updateDirector)
                     SearchHierarchyAndConnectDirector(directors, graph, playables, prefabGameObject != null);
 
-                if (updateParticle)
-                    SearchHierarchyAndConnectParticleSystem(particleSystems, graph, playables);
+                if (shouldSimulateParticle)
+                {
+#if UNITY_EDITOR
+                    var useCompRandomSeed = updateParticle == ControlPlayAssetParticleSimulateMode.Simulate;
+#else
+                    var useCompRandomSeed = false; // always use the particleRandomSeed in runtime
+#endif
+                    SearchHierarchyAndConnectParticleSystem(particleSystems, graph, useCompRandomSeed, playables);
+                }
 
                 if (updateITimeControl)
                 {
@@ -199,7 +223,7 @@ namespace UnityEngine.Timeline
                 // Release the lists.
                 if (updateDirector)
                     ListPools.PlayableDirector.Release(directors);
-                if (updateParticle)
+                if (shouldSimulateParticle)
                     ListPools.ParticleSystem.Release(particleSystems);
             }
 
@@ -234,16 +258,23 @@ namespace UnityEngine.Timeline
                 outplayables.Add(activation);
         }
 
-        void SearchHierarchyAndConnectParticleSystem(IEnumerable<ParticleSystem> particleSystems, PlayableGraph graph,
-            List<Playable> outplayables)
+        void SearchHierarchyAndConnectParticleSystem(IEnumerable<ParticleSystem> particleSystems, PlayableGraph graph, bool useCompRandomSeed, List<Playable> outplayables)
         {
             foreach (var particleSystem in particleSystems)
             {
-                if (particleSystem != null)
+                controllingParticles = true;
+                uint randomSeed;
+                if (useCompRandomSeed)
                 {
-                    controllingParticles = true;
-                    outplayables.Add(ParticleControlPlayable.Create(graph, particleSystem, particleRandomSeed));
+                    if (particleSystem.useAutoRandomSeed)
+                        L.E($"[ControlPlayableAsset] ParticleSystem {particleSystem.name} is using autoRandomSeed, but ControlPlayableAsset is set to use self random seed.");
+                    randomSeed = particleSystem.randomSeed;
                 }
+                else
+                {
+                    randomSeed = particleRandomSeed;
+                }
+                outplayables.Add(ParticleControlPlayable.Create(graph, particleSystem, randomSeed));
             }
         }
 
@@ -303,9 +334,6 @@ namespace UnityEngine.Timeline
 
         internal static void GetControlableScripts(GameObject root, List<MonoBehaviour> scripts)
         {
-            if (root == null)
-                return;
-
             foreach (var script in root.GetComponentsInChildren<MonoBehaviour>())
             {
                 if (script is ITimeControl)
@@ -406,7 +434,7 @@ namespace UnityEngine.Timeline
             var gameObject = sourceGameObject.Resolve(director);
             if (gameObject != null)
             {
-                if (updateParticle)// case 1076850 -- drive all emitters, not just roots.
+                if (updateParticle is ControlPlayAssetParticleSimulateMode.Simulate)// case 1076850 -- drive all emitters, not just roots.
                     PreviewParticles(driver, gameObject.GetComponentsInChildren<ParticleSystem>(true));
 
                 if (active)

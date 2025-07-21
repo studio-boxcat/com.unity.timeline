@@ -42,7 +42,9 @@ namespace UnityEngine.Timeline
                 if (gameObject == null)
                     continue;
 
-                if (controlPlayableAsset.updateParticle)
+                // XXX: PreviewParticles() will set randomSeed and autoRandomSeed to be driven by the director
+                // so we only need to mark Simulate mode particles. (PreviewOnly need randomSeed of itself.)
+                if (controlPlayableAsset.updateParticle is ControlPlayAssetParticleSimulateMode.Simulate)
                     particlesToPreview.UnionWith(gameObject.GetComponentsInChildren<ParticleSystem>(true));
                 if (controlPlayableAsset.active)
                     activationToPreview.Add(gameObject);
