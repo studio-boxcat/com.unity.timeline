@@ -520,10 +520,11 @@ namespace UnityEditor.Timeline
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0, CreateInstance<DoCreateTimeline>(), "New Timeline.playable", icon, null);
         }
 
-        [MenuItem("Window/Sequencing/Timeline", false, 1)]
+        [MenuItem("Window/Sequencing/Timeline %#&t", false, 1)]
         public static void ShowWindow()
         {
-            GetWindow<TimelineWindow>(typeof(SceneView));
+            var t = Type.GetType("UnityEditor.Graphs.AnimatorControllerTool, UnityEditor.Graphs");
+            GetWindow<TimelineWindow>(t, typeof(SceneView));
             instance.Focus();
         }
 
