@@ -66,6 +66,7 @@ namespace UnityEditor.Timeline
             public const string moveUp = "Timeline/MoveUp";
             public const string moveDown = "Timeline/MoveDown";
             public const string keyAllAnimated = "Timeline/KeyAllAnimated";
+            public const string toggleLockWindow = "Timeline/Toggle Lock Window";
 
             [UsedImplicitly, ShortcutManagement.Shortcut(play, typeof(TimelineWindow), KeyCode.Space)]
             static void Play(ShortcutManagement.ShortcutArguments args)
@@ -223,11 +224,13 @@ namespace UnityEditor.Timeline
                 SendEventToInvokeShortcut(matchContent, args.context);
             }
 
+            /*
             [UsedImplicitly, ShortcutManagement.Shortcut(toggleLock, typeof(TimelineWindow), KeyCode.L)]
             static void Lock(ShortcutManagement.ShortcutArguments args)
             {
                 SendEventToInvokeShortcut(toggleLock, args.context);
             }
+            */
 
             [UsedImplicitly, ShortcutManagement.Shortcut(toggleMute, typeof(TimelineWindow), KeyCode.M)]
             static void Mute(ShortcutManagement.ShortcutArguments args)
@@ -247,6 +250,13 @@ namespace UnityEditor.Timeline
             static void ExpandGroup(ShortcutManagement.ShortcutArguments args)
             {
                 SendEventToInvokeShortcut(expandTrack, args.context);
+            }
+
+            [UsedImplicitly]
+            [ShortcutManagement.Shortcut(toggleLockWindow, typeof(TimelineWindow), KeyCode.L)]
+            static void ToggleLockWindow(ShortcutManagement.ShortcutArguments args)
+            {
+                SendEventToInvokeShortcut(toggleLockWindow, args.context);
             }
         }
 
