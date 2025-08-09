@@ -892,27 +892,4 @@ namespace UnityEditor.Timeline
             return GetKeyableTracks(state, context).Any();
         }
     }
-
-    [Shortcut(Shortcuts.Timeline.toggleLockWindow)]
-    [ActiveInMode(TimelineModes.Default | TimelineModes.ReadOnly)]
-    class ToggleLockWindowAction : TimelineAction
-    {
-        public override ActionValidity Validate(ActionContext context)
-        {
-            return CanExecute(TimelineEditor.state)
-                ? ActionValidity.Valid
-                : ActionValidity.NotApplicable;
-        }
-
-        public override bool Execute(ActionContext actionContext)
-        {
-            TimelineWindow.instance.locked = !TimelineWindow.instance.locked;
-            return true;
-        }
-
-        static bool CanExecute(WindowState state)
-        {
-            return state.editSequence.asset;
-        }
-    }
 }
