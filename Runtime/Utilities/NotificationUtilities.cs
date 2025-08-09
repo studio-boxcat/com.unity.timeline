@@ -59,6 +59,24 @@ namespace UnityEngine.Timeline
 
         public static bool TrackTypeSupportsNotifications(Type type)
         {
+            if (type == typeof(ActivationTrack) // GameObject
+                || type == typeof(AnimationTrack) // Animator
+                || type == typeof(AudioTrack) // AudioSource
+                || type == typeof(MarkerTrack) // GameObject
+                || type == typeof(SignalTrack) // SignalReceiver
+               )
+            {
+                return true;
+            }
+
+            if (type == typeof(ControlTrack) // no binding
+                || type == typeof(GroupTrack)) // no binding
+            {
+                return false;
+            }
+
+            L.E($"[Timeline] Unknown track type: {type.FullName}");
+
             if (_supportsNotificationsCache.TryGetValue(type, out var result))
                 return result;
 
