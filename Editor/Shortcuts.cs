@@ -57,7 +57,6 @@ namespace UnityEditor.Timeline
             public const string multiSelectDown = "Timeline/SelectDown";
             public const string toggleClipTrackArea = "Timeline/ToggleClipTrackArea";
             public const string matchContent = "Timeline/MatchContent";
-            public const string toggleLock = "Timeline/ToggleLock";
             public const string toggleMute = "Timeline/ToggleMute";
             public const string collapseTrack = "Timeline/Collapse Track";
             public const string expandTrack = "Timeline/Expand Track";
@@ -221,12 +220,6 @@ namespace UnityEditor.Timeline
             static void Shortcut(ShortcutManagement.ShortcutArguments args)
             {
                 SendEventToInvokeShortcut(matchContent, args.context);
-            }
-
-            [UsedImplicitly, ShortcutManagement.Shortcut(toggleLock, typeof(TimelineWindow), KeyCode.L)]
-            static void Lock(ShortcutManagement.ShortcutArguments args)
-            {
-                SendEventToInvokeShortcut(toggleLock, args.context);
             }
 
             [UsedImplicitly, ShortcutManagement.Shortcut(toggleMute, typeof(TimelineWindow), KeyCode.M)]
