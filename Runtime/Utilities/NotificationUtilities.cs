@@ -63,7 +63,7 @@ namespace UnityEngine.Timeline
                 || type == typeof(AnimationTrack) // Animator
                 || type == typeof(AudioTrack) // AudioSource
                 || type == typeof(MarkerTrack) // GameObject
-                || type == typeof(SignalTrack) // SignalReceiver
+                // || type == typeof(SignalTrack) // SignalReceiver
                )
             {
                 return true;
