@@ -8,9 +8,7 @@ namespace UnityEngine.Timeline
     {
         None = 0, // 모든 particle 관련된 처리를 하지 않음.
         Simulate = 1, // timeline 에서 런타임, editor 모두에서 시뮬레이션을 담당.
-#if UNITY_EDITOR
-        PreviewOnly, // timeline 에서 런타임에서 시뮬레이션을 담당하지 않지만, editor 에서만 시뮬레이션을 담당.
-#endif
+        PreviewOnly = 2, // timeline 에서 런타임에서 시뮬레이션을 담당하지 않지만, editor 에서만 시뮬레이션을 담당.
     }
 
     /// <summary>
