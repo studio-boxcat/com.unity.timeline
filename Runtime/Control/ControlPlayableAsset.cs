@@ -165,8 +165,11 @@ namespace UnityEngine.Timeline
                 {
                     ControlPlayAssetParticleSimulateMode.None => false,
                     ControlPlayAssetParticleSimulateMode.Simulate => true,
+                    ControlPlayAssetParticleSimulateMode.PreviewOnly =>
 #if UNITY_EDITOR
-                    ControlPlayAssetParticleSimulateMode.PreviewOnly => Editing.Yes(sourceObject),
+                        Editing.Yes(sourceObject),
+#else
+                        false, // don't simulate particles on device, it will be played by it's own particle system.
 #endif
                     _ => throw new ArgumentOutOfRangeException()
                 };
