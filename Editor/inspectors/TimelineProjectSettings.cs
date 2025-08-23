@@ -111,7 +111,7 @@ class TimelineProjectSettingsProvider : SettingsProvider
                 TimelineProjectSettings.instance.Save();
             }
 #if TIMELINE_FRAMEACCURATE
-            if (!frameRateIsValid && TimelinePreferences.instance.playbackLockedToFrame)
+            if (!frameRateIsValid && TimelinePreferences.playbackLockedToFrame)
                 EditorGUILayout.HelpBox(Styles.WarningString, MessageType.Warning);
 #endif
         }

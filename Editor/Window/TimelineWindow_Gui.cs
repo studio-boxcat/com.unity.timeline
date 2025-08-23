@@ -38,10 +38,6 @@ namespace UnityEditor.Timeline
         static internal readonly TimelineMode s_PrefabOutOfContextMode = new TimelineAssetEditionMode();
         static internal readonly TimelineMode s_ReadonlyMode = new TimelineReadOnlyMode();
 
-        private static readonly GUIContent MenuItemFrames = L10n.TextContent("Frames");
-        private static readonly GUIContent MenuItemTimecode = L10n.TextContent("Timecode");
-        private static readonly GUIContent MenuItemSeconds = L10n.TextContent("Seconds");
-
         static readonly string k_FrameRateMenuLabel = L10n.Tr("Frame Rate/{0}");
         static readonly string k_CustomFpsLabel = L10n.Tr("{0}: {1:f2} fps");
 
@@ -382,15 +378,6 @@ namespace UnityEditor.Timeline
                 if (EditorGUI.DropdownButton(rect, DirectorStyles.optionsCogIcon, FocusType.Keyboard, EditorStyles.toolbarButton))
                 {
                     GenericMenu menu = new GenericMenu();
-
-                    menu.AddItem(L10n.TextContent("Preferences Page..."), false, () => SettingsWindow.Show(SettingsScope.User, "Preferences/Timeline"));
-                    menu.AddSeparator("");
-
-                    menu.AddItem(MenuItemFrames, state.timeFormat == TimeFormat.Frames, () => state.timeFormat = TimeFormat.Frames);
-                    menu.AddItem(MenuItemTimecode, state.timeFormat == TimeFormat.Timecode, () => state.timeFormat = TimeFormat.Timecode);
-                    menu.AddItem(MenuItemSeconds, state.timeFormat == TimeFormat.Seconds, () => state.timeFormat = TimeFormat.Seconds);
-
-                    menu.AddSeparator("");
 
                     TimeAreaContextMenu.AddTimeAreaMenuItems(menu, state);
 

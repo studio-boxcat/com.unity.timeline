@@ -24,7 +24,7 @@ namespace UnityEditor.Timeline
 
         public static double SnapToFrameIfRequired(double currentTime)
         {
-            return TimelinePreferences.instance.snapToFrame ? SnapToFrame(currentTime) : currentTime;
+            return TimelinePreferences.snapToFrame ? SnapToFrame(currentTime) : currentTime;
         }
 
         public static double SnapToFrame(double time)

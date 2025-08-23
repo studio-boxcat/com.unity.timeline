@@ -295,25 +295,17 @@ namespace UnityEditor.Timeline
 
         public bool frameSnap
         {
-            get { return TimelinePreferences.instance.snapToFrame; }
-            set { TimelinePreferences.instance.snapToFrame = value; }
+            get { return TimelinePreferences.snapToFrame; }
         }
 
         public bool edgeSnaps
         {
-            get { return TimelinePreferences.instance.edgeSnap; }
-            set { TimelinePreferences.instance.edgeSnap = value; }
+            get { return TimelinePreferences.edgeSnap; }
         }
 
         public bool muteAudioScrubbing
         {
-            get { return !TimelinePreferences.instance.audioScrubbing; }
-            set
-            {
-                TimelinePreferences.instance.audioScrubbing = !value;
-                TimelinePlayable.muteAudioScrubbing = value;
-                RebuildPlayableGraph();
-            }
+            get { return !TimelinePreferences.audioScrubbing; }
         }
 
         public TimeReferenceMode timeReferenceMode
@@ -324,14 +316,12 @@ namespace UnityEditor.Timeline
 
         public TimeFormat timeFormat
         {
-            get { return TimelinePreferences.instance.timeFormat; }
-            set { TimelinePreferences.instance.timeFormat = value; }
+            get { return TimelinePreferences.timeFormat; }
         }
 
         public bool showAudioWaveform
         {
-            get { return TimelinePreferences.instance.showAudioWaveform; }
-            set { TimelinePreferences.instance.showAudioWaveform = value; }
+            get { return TimelinePreferences.showAudioWaveform; }
         }
 
         public PlayRange playRange
@@ -348,8 +338,7 @@ namespace UnityEditor.Timeline
 
         public PlaybackScrollMode autoScrollMode
         {
-            get { return TimelinePreferences.instance.playbackScrollMode; }
-            set { TimelinePreferences.instance.playbackScrollMode = value; }
+            get { return TimelinePreferences.playbackScrollMode; }
         }
 
         public List<PlayableDirector> previewedDirectors { get; private set; }
@@ -661,7 +650,7 @@ namespace UnityEditor.Timeline
                 if (masterSequence.time > masterSequence.duration)
                     masterSequence.time = 0;
 #if TIMELINE_FRAMEACCURATE
-                if (TimelinePreferences.instance.playbackLockedToFrame)
+                if (TimelinePreferences.playbackLockedToFrame)
                 {
                     FrameRate frameRate = FrameRate.DoubleToFrameRate(masterSequence.asset.editorSettings.frameRate);
                     masterSequence.director.Play(frameRate);

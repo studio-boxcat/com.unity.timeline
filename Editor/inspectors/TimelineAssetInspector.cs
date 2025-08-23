@@ -127,7 +127,7 @@ namespace UnityEditor.Timeline
         {
             if (TimelineWindow.instance != null
                 && TimelineWindow.instance.state != null
-                && TimelinePreferences.instance.playbackLockedToFrame
+                && TimelinePreferences.playbackLockedToFrame
                 && ContainsMasterAsset(asset))
             {
                 TimelineEditor.RefreshPreviewPlay();

@@ -20,7 +20,7 @@ namespace UnityEditor.Timeline
             property.doubleValue = FrameRateField(property.doubleValue, label, position, out bool frameRateIsValid);
             EditorGUI.EndProperty();
 #if TIMELINE_FRAMEACCURATE
-            if (!frameRateIsValid && TimelinePreferences.instance.playbackLockedToFrame)
+            if (!frameRateIsValid && TimelinePreferences.playbackLockedToFrame)
                 EditorGUILayout.HelpBox(
                     L10n.Tr("Locking playback cannot be enabled for this frame rate."),
                     MessageType.Warning);
