@@ -848,7 +848,7 @@ namespace UnityEngine.Timeline
         /// <returns></returns>
         public override string ToString()
         {
-            return UnityString.Format("{0} ({1:F2}, {2:F2}):{3:F2} | {4}", displayName, start, end, clipIn, GetParentTrack());
+            return String.Format("{0} ({1:F2}, {2:F2}):{3:F2} | {4}", displayName, start, end, clipIn, GetParentTrack());
         }
 
         /// <summary>
