@@ -75,7 +75,7 @@ namespace UnityEngine.Timeline
                 return false;
             }
 
-            L.E($"[Timeline] Unknown track type: {type.FullName}");
+            L.E($"Unknown track type: {type.FullName}");
 
             if (_supportsNotificationsCache.TryGetValue(type, out var result))
                 return result;

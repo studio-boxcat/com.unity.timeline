@@ -268,7 +268,7 @@ namespace UnityEngine.Timeline
                 if (useCompRandomSeed)
                 {
                     if (particleSystem.useAutoRandomSeed)
-                        L.E($"[ControlPlayableAsset] ParticleSystem {particleSystem.name} is using autoRandomSeed, but ControlPlayableAsset is set to use self random seed.");
+                        L.E($"ParticleSystem {particleSystem.name} is using autoRandomSeed, but ControlPlayableAsset is set to use self random seed.");
                     randomSeed = particleSystem.randomSeed;
                 }
                 else
